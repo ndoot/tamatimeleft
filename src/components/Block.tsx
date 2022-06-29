@@ -4,7 +4,7 @@ import { Box, Button, Card, Heading, Input, Select } from "theme-ui";
 import { theme } from "../theme";
 
 interface Props {
-  type: string;
+  blockType: string;
 }
 
 const EachBox = styled(Box)`
@@ -19,39 +19,37 @@ const EachBox = styled(Box)`
 
 const StyledInput = styled(Input)`
   width: 95%;
-  height: 40px;  
+  height: 40px;
   font-family: "Press Start 2P";
 `;
 
 const StyledSelect = styled(Select)`
   height: 40px;
   font-family: "Press Start 2P";
-
 `;
 
 const EachField = styled.div`
   padding: 10px;
   height: 30px;
   width: 100%;
-`
-
+`;
 
 const Block = (props: Props) => {
-  const {
-    type
-  } = props;
-  let inputType = '';
-  if (type === "income") {
-    inputType = "Source"
-  } else if (type === "expenses") {
-    inputType = "Category"
+  const { blockType } = props;
+
+  let inputType = "";
+  if (blockType === "income") {
+    inputType = "Source";
+  } else if (blockType === "expenses") {
+    inputType = "Category";
   }
+
   return (
     <div className="Block">
       <Card>
         <EachBox as="form" onSubmit={(e) => e.preventDefault()}>
           <EachField>
-            <StyledInput placeholder={inputType} ></StyledInput>
+            <StyledInput placeholder={inputType}></StyledInput>
           </EachField>
           <EachField>
             <StyledInput placeholder="Amount" type="number"></StyledInput>
@@ -63,7 +61,7 @@ const Block = (props: Props) => {
               <option>Weekly</option>
               <option>Fortnightly</option>
               <option>Monthly</option>
-            </StyledSelect>           
+            </StyledSelect>
           </EachField>
         </EachBox>
       </Card>

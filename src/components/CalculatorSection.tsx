@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import { Button, Container, Heading } from "theme-ui";
 import { theme } from "../theme";
 import BlockStack from "./BlockStack";
-//import BlockStack from "./BlockStack";
 
 interface Props {}
 
@@ -23,13 +22,11 @@ const CalculatorSection = (props: Props) => {
 
   return (
     <div className="CalculatorSection">
-      <Container>
-        <Heading>Savings</Heading>
-
-        <Heading>Income</Heading>
-        <BlockStack></BlockStack>
-        <Heading>Expenses</Heading>
-      </Container>
+      <Heading as="h3">Savings</Heading>
+      <Heading as="h3">Income</Heading>
+      <BlockStack blockType="income" />
+      <Heading as="h3">Expenses</Heading>
+      <BlockStack blockType="expenses" />
       <MainButton bg="primary">Calculate</MainButton>
     </div>
   );

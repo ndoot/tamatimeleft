@@ -10,6 +10,7 @@ export const theme = merge(swiss, {
   text: {
     heading: {
       fontFamily: "heading",
+      margin: "1rem auto",
     },
   },
 });
