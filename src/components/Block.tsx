@@ -1,10 +1,15 @@
-import React from "react";
+import React, { ChangeEvent, ChangeEventHandler } from "react";
 import styled from "@emotion/styled";
 import { Box, Button, Card, Heading, Input, Select } from "theme-ui";
 import { theme } from "../theme";
+import { FormValue } from "../interfaces";
 
 interface Props {
   blockType: string;
+  formValue: FormValue;
+  handleInputChange: (e: ChangeEvent<HTMLInputElement>, idx: number) => void;
+  handleSelectChange: (e: ChangeEvent<HTMLSelectElement>, idx: number) => void;
+  idx: number;
 }
 
 const EachBox = styled(Box)`
@@ -35,7 +40,8 @@ const EachField = styled.div`
 `;
 
 const Block = (props: Props) => {
-  const { blockType } = props;
+  const { blockType, formValue, handleInputChange, handleSelectChange, idx } =
+    props;
 
   let inputType = "";
   if (blockType === "income") {
@@ -49,13 +55,34 @@ const Block = (props: Props) => {
       <Card>
         <EachBox as="form" onSubmit={(e) => e.preventDefault()}>
           <EachField>
-            <StyledInput placeholder={inputType}></StyledInput>
+            <StyledInput
+              placeholder={inputType}
+              value={formValue.category}
+              name="category"
+              onChange={(e: ChangeEvent<HTMLInputElement>, idx: number) =>
+                handleInputChange(e, idx)
+              }
+            ></StyledInput>
           </EachField>
           <EachField>
-            <StyledInput placeholder="Amount" type="number"></StyledInput>
+            <StyledInput
+              placeholder="Amount"
+              type="number"
+              value={formValue.amount}
+              onChange={(e: ChangeEvent<HTMLInputElement>, idx: number) =>
+                handleInputChange(e, idx)
+              }
+              name="amount"
+            ></StyledInput>
           </EachField>
           <EachField>
-            <StyledSelect defaultValue="yo">
+            <StyledSelect
+              value={formValue.frequency}
+              name="frequency"
+              onChange={(e: ChangeEvent<HTMLSelectElement>, idx: number) =>
+                handleSelectChange(e, idx)
+              }
+            >
               <option>One-off</option>
               <option>Daily</option>
               <option>Weekly</option>

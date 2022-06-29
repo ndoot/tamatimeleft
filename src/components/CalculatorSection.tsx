@@ -8,6 +8,7 @@ interface Props {}
 
 const MainButton = styled(Button)`
   width: 70%;
+  margin: auto;
   max-width: 300px;
   padding: 1rem;
   font-family: "Press Start 2P";
