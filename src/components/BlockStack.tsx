@@ -9,8 +9,6 @@ interface Props {}
 const StyledBlockStack = styled.div`
   width: 100%;
   display: grid;
-  margin-left: 1rem;
-  margin-right: 1rem;
   font-family: "Press Start 2P";
 `
 
@@ -20,7 +18,7 @@ const BlockStack = (props: Props) => {
   return (
     <div className="BlockStack">
       <StyledBlockStack>
-        <Block type="expenses"></Block>
+        <Block type="income"></Block>
         <Block type="expenses"></Block>
       </StyledBlockStack>
     </div>
