@@ -1,13 +1,6 @@
 import styled from "@emotion/styled";
-import React, {
-  BaseSyntheticEvent,
-  ChangeEvent,
-  ChangeEventHandler,
-  SyntheticEvent,
-  useEffect,
-  useState,
-} from "react";
-import { Button, IconButton } from "theme-ui";
+import React, { ChangeEvent, MouseEvent } from "react";
+import { IconButton } from "theme-ui";
 import { theme } from "../theme";
 import Block from "./Block";
 import { FormValue } from "../interfaces";
@@ -15,7 +8,12 @@ import { FormValue } from "../interfaces";
 interface Props {
   blockType: string;
   formValues: FormValue[];
-  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, idx: number) => void;
+  handleChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    blockType: string,
+    idx: number
+  ) => void;
+  addFormField: (blockType: string) => void;
 }
 
 const StyledBlockStack = styled.div`
@@ -38,11 +36,12 @@ const StyledAddButton = styled(IconButton)`
 `;
 
 const BlockStack = (props: Props) => {
-  const { blockType, formValues, handleChange } = props;
+  const { blockType, formValues, handleChange, addFormField } = props;
 
-  useEffect(() => {
-    console.log(formValues);
-  }, [formValues])
+  const handleAddClick = (e: MouseEvent) => {
+    e.preventDefault();
+    addFormField(blockType);
+  };
 
   return (
     <StyledBlockStack>
@@ -55,7 +54,7 @@ const BlockStack = (props: Props) => {
           key={`block-${idx}`}
         />
       ))}
-      <StyledAddButton onClick={addFormField}>+</StyledAddButton>
+      <StyledAddButton onClick={handleAddClick}>+</StyledAddButton>
     </StyledBlockStack>
   );
 };

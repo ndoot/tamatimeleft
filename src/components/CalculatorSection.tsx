@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import styled from "@emotion/styled";
-import { Button, Container, Heading } from "theme-ui";
+import { Button, Heading } from "theme-ui";
 import { theme } from "../theme";
 import BlockStack from "./BlockStack";
 import { FormValue } from "../interfaces";
@@ -23,37 +23,45 @@ const defaultFormValue: FormValue = {
   category: "",
   amount: undefined,
   frequency: "weekly",
+  rate: 0,
   blockType: "",
 };
+
+interface AllFormValues {
+  savings: FormValue[];
+  income: FormValue[];
+  expenses: FormValue[];
+  [propName: string]: any;
+}
 
 const CalculatorSection = (props: Props) => {
   const {} = props;
 
-  const [formValues, setFormValues] = useState([
-    { ...defaultFormValue, blockType: "income" },
-    { ...defaultFormValue, blockType: "expenses" },
-  ]);
+  const [formValues, setFormValues] = useState<AllFormValues>({
+    savings: [{ ...defaultFormValue, blockType: "savings" }],
+    income: [{ ...defaultFormValue, blockType: "income" }],
+    expenses: [{ ...defaultFormValue, blockType: "expenses" }],
+  });
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    blockType: string,
     idx: number
   ) => {
-    console.log(`Changing idx ${idx}`);
-    const newFormValues = [...formValues];
-    newFormValues[idx][e.target.name as string] = e.target.value;
+    const newFormValues = { ...formValues };
+    newFormValues[blockType][idx][e.target.name] = e.target.value;
     setFormValues(newFormValues);
   };
 
   const addFormField = (blockType: string) => {
-    setFormValues([
-      ...formValues,
-      {...defaultFormValue, blockType}
-    ]);
+    const newFormValues = { ...formValues };
+    newFormValues[blockType].push({ ...defaultFormValue, blockType });
+    setFormValues(newFormValues);
   };
 
-  const removeFormField = (idx: number) => {
-    const newFormValues = [...formValues];
-    newFormValues.splice(idx, 1);
+  const removeFormField = (blockType: string, idx: number) => {
+    const newFormValues = { ...formValues };
+    newFormValues[blockType].splice(idx, 1);
     setFormValues(newFormValues);
   };
 
@@ -63,14 +71,16 @@ const CalculatorSection = (props: Props) => {
       <Heading as="h3">Income</Heading>
       <BlockStack
         blockType="income"
-        formValues={formValues.filter((val) => val.blockType === "income")}
+        formValues={formValues.income}
         handleChange={handleChange}
+        addFormField={addFormField}
       />
       <Heading as="h3">Expenses</Heading>
       <BlockStack
         blockType="expenses"
-        formValues={formValues.filter((val) => val.blockType === "expenses")}
+        formValues={formValues.expenses}
         handleChange={handleChange}
+        addFormField={addFormField}
       />
       <MainButton bg="primary">Calculate</MainButton>
     </div>

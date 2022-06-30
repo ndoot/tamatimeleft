@@ -1,13 +1,17 @@
-import React, { ChangeEvent, ChangeEventHandler } from "react";
+import React, { ChangeEvent } from "react";
 import styled from "@emotion/styled";
-import { Box, Button, Card, Heading, Input, Select } from "theme-ui";
+import { Box, Card, Input, Select } from "theme-ui";
 import { theme } from "../theme";
 import { FormValue } from "../interfaces";
 
 interface Props {
   blockType: string;
   formValue: FormValue;
-  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, idx: number) => void;
+  handleChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    blockType: string,
+    idx: number
+  ) => void;
   idx: number;
 }
 
@@ -39,8 +43,7 @@ const EachField = styled.div`
 `;
 
 const Block = (props: Props) => {
-  const { blockType, formValue, handleChange, idx } =
-    props;
+  const { blockType, formValue, handleChange, idx } = props;
 
   let inputType = "";
   if (blockType === "income") {
@@ -59,7 +62,7 @@ const Block = (props: Props) => {
               value={formValue.category}
               name="category"
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleChange(e, idx)
+                handleChange(e, blockType, idx)
               }
             ></StyledInput>
           </EachField>
@@ -69,7 +72,7 @@ const Block = (props: Props) => {
               type="number"
               value={formValue.amount}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleChange(e, idx)
+                handleChange(e, blockType, idx)
               }
               name="amount"
             ></StyledInput>
@@ -79,7 +82,7 @@ const Block = (props: Props) => {
               value={formValue.frequency}
               name="frequency"
               onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                handleChange(e, idx)
+                handleChange(e, blockType, idx)
               }
             >
               <option>One-off</option>
