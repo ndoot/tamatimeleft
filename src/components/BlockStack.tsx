@@ -49,7 +49,10 @@ const StyledDelButton = styled(IconButton)`
   font-family: "Press Start 2P";
   padding-top: 0.4rem;
   flex: 0 1 40px;
+  width: 30px;
+  height: 30px;
   margin-left: 0.6rem;
+  margin-top: -0.2rem;
 
   &:hover {
     cursor: pointer;
@@ -95,7 +98,7 @@ const BlockStack = (props: Props) => {
           )}
         </StyledBlockRow>
       ))}
-      <StyledAddButton onClick={handleAddClick}>+</StyledAddButton>
+      <StyledAddButton onClick={(e) => handleAddClick(e)}>+</StyledAddButton>
     </StyledBlockStack>
   );
 };

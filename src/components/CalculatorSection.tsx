@@ -22,7 +22,7 @@ const MainButton = styled(Button)`
 
 const defaultFormValue: FormValue = {
   category: "",
-  amount: undefined,
+  amount: "",
   frequency: "One-off",
   rate: 0,
   blockType: "",
@@ -47,15 +47,6 @@ const CalculatorSection = (props: Props) => {
   useEffect(() => {
     console.log(formValues);
   }, [formValues]);
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    blockType: string,
-    idx: number
-  ) => {
-    console.log("handle change has been called");
-    updateForm(e.target.name, e.target.value, blockType, idx);
-  };
 
   const updateForm = (
     fieldName: string,
@@ -106,7 +97,7 @@ const CalculatorSection = (props: Props) => {
         addFormField={addFormField}
         delFormField={delFormField}
       />
-      <MainButton bg="primary" onClick={scrollToTop}>
+      <MainButton bg="primary" onClick={() => scrollToTop()}>
         Calculate
       </MainButton>
     </div>

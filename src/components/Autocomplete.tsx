@@ -83,6 +83,11 @@ interface autoCompleteProps {
   searchText: string;
 }
 
+interface SearchData {
+  text: string;
+  suggestions: string[];
+}
+
 export const AutoComplete: FC<autoCompleteProps> = ({
   optionsStyle,
   inputType,
@@ -93,7 +98,7 @@ export const AutoComplete: FC<autoCompleteProps> = ({
   name,
   searchText,
 }) => {
-  const [search, setSearch] = useState<{ text: string; suggestions: any[] }>({
+  const [search, setSearch] = useState<SearchData>({
     text: searchText,
     suggestions: [],
   });
@@ -122,6 +127,10 @@ export const AutoComplete: FC<autoCompleteProps> = ({
   useEffect(() => {
     updateForm(name, search.text, blockType, idx);
   }, [search]);
+
+  useEffect(() => {
+    setSearch({ ...search, text: searchText });
+  }, [searchText]);
 
   return (
     <Root>
