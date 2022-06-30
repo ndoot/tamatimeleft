@@ -21,6 +21,13 @@ const MainButton = styled(Button)`
 const CalculatorSection = (props: Props) => {
   const {} = props;
 
+  const scrollToTop = () =>{
+    window.scrollTo({
+      top: 0, 
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <div className="CalculatorSection">
       <Container>
@@ -30,7 +37,7 @@ const CalculatorSection = (props: Props) => {
         <BlockStack></BlockStack>
         <Heading>Expenses</Heading>
       </Container>
-      <MainButton bg="primary">Calculate</MainButton>
+      <MainButton bg="primary" onClick={scrollToTop}>Calculate</MainButton>
     </div>
   );
 };
