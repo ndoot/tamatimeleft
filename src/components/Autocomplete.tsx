@@ -9,7 +9,7 @@ CREDIT FOR MOST OF THIS BELONGS TO
 https://codesandbox.io/s/simple-react-autocomplete-functionalcomponent-typescript-ki51s?from-embed=&file=/src/index.tsx
 
 Major changes were made to the design and functionality, including getting it working with existing components and
-adding additional features, including auto-highlight, inputtype and all styling, removal of dropdown button
+adding additional features, including auto-highlight, inputtype changed to array and all styling, removal of dropdown button
 */
 
 
@@ -73,6 +73,7 @@ interface autoCompleteProps {
   inputType?: string;
   data: any[];
 }
+
 export const AutoComplete: FC<autoCompleteProps> = ({
   optionsStyle,
   inputType,
@@ -87,10 +88,8 @@ export const AutoComplete: FC<autoCompleteProps> = ({
     const value = e.target.value;
     console.log(value)
     let suggestions = [];
-    if (value.length > 0) {
-      const regex = new RegExp(`^${value}`, "i");
-      suggestions = data.sort().filter((v: string) => regex.test(v));
-    }
+    const regex = new RegExp(`^${value}`, "i");
+    suggestions = data.sort().filter((v: string) => regex.test(v));
     console.log(suggestions);
     setIsComponentVisible(true);
     setSearch({ suggestions, text: value });
