@@ -7,8 +7,7 @@ import { FormValue } from "../interfaces";
 interface Props {
   blockType: string;
   formValue: FormValue;
-  handleInputChange: (e: ChangeEvent<HTMLInputElement>, idx: number) => void;
-  handleSelectChange: (e: ChangeEvent<HTMLSelectElement>, idx: number) => void;
+  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, idx: number) => void;
   idx: number;
 }
 
@@ -40,7 +39,7 @@ const EachField = styled.div`
 `;
 
 const Block = (props: Props) => {
-  const { blockType, formValue, handleInputChange, handleSelectChange, idx } =
+  const { blockType, formValue, handleChange, idx } =
     props;
 
   let inputType = "";
@@ -59,8 +58,8 @@ const Block = (props: Props) => {
               placeholder={inputType}
               value={formValue.category}
               name="category"
-              onChange={(e: ChangeEvent<HTMLInputElement>, idx: number) =>
-                handleInputChange(e, idx)
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                handleChange(e, idx)
               }
             ></StyledInput>
           </EachField>
@@ -69,8 +68,8 @@ const Block = (props: Props) => {
               placeholder="Amount"
               type="number"
               value={formValue.amount}
-              onChange={(e: ChangeEvent<HTMLInputElement>, idx: number) =>
-                handleInputChange(e, idx)
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                handleChange(e, idx)
               }
               name="amount"
             ></StyledInput>
@@ -79,8 +78,8 @@ const Block = (props: Props) => {
             <StyledSelect
               value={formValue.frequency}
               name="frequency"
-              onChange={(e: ChangeEvent<HTMLSelectElement>, idx: number) =>
-                handleSelectChange(e, idx)
+              onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                handleChange(e, idx)
               }
             >
               <option>One-off</option>

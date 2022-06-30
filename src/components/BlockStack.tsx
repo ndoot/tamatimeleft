@@ -4,6 +4,7 @@ import React, {
   ChangeEvent,
   ChangeEventHandler,
   SyntheticEvent,
+  useEffect,
   useState,
 } from "react";
 import { Button, IconButton } from "theme-ui";
@@ -45,16 +46,17 @@ const BlockStack = (props: Props) => {
 
   const [formValues, setFormValues] = useState([defaultFormValue]);
 
-  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (
-    e: ChangeEvent<HTMLInputElement>,
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     idx: number
   ) => {
+    console.log(`Changing idx ${idx}`)
     const newFormValues = [...formValues];
     newFormValues[idx][e.target.name] = e.target.value;
     setFormValues(newFormValues);
   };
 
-  const handleSelectChange: ChangeEventHandler<HTMLSelectElement> = (
+  const handleSelectChange = (
     e: ChangeEvent<HTMLSelectElement>,
     idx: number
   ) => {
@@ -72,6 +74,10 @@ const BlockStack = (props: Props) => {
     newFormValues.splice(idx, 1);
     setFormValues(newFormValues);
   };
+  
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues])
 
   return (
     <StyledBlockStack>
@@ -79,8 +85,7 @@ const BlockStack = (props: Props) => {
         <Block
           formValue={formValueItem}
           blockType={blockType}
-          handleInputChange={handleInputChange}
-          handleSelectChange={handleSelectChange}
+          handleChange={handleChange}
           idx={idx}
           key={`block-${idx}`}
         />
