@@ -28,7 +28,8 @@ const StyledBlockStack = styled.div`
 const StyledAddButton = styled(IconButton)`
   border: solid 1px black;
   padding: 1rem 1.8rem 0.8rem 1.8rem;
-  margin: 0.3rem auto;
+  margin: auto;
+  margin-bottom: 0.5rem;
   font-size: 1.5rem;
   font-family: "Press Start 2P";
 
