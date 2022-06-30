@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
 import { theme } from "../theme";
@@ -9,10 +9,11 @@ interface Props {}
 
 const MainButton = styled(Button)`
   width: 70%;
-  margin: auto;
+  margin: 1rem auto;
   max-width: 300px;
   padding: 1rem;
   font-family: "Press Start 2P";
+  display: block;
   &:hover {
     background-color: ${theme.colors?.secondary};
     cursor: pointer;
@@ -43,12 +44,17 @@ const CalculatorSection = (props: Props) => {
     expenses: [{ ...defaultFormValue, blockType: "expenses" }],
   });
 
+  useEffect(() => {
+    console.log(formValues)
+  }, [formValues])
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     blockType: string,
     idx: number
   ) => {
     const newFormValues = { ...formValues };
+    console.log(e);
     newFormValues[blockType][idx][e.target.name] = e.target.value;
     setFormValues(newFormValues);
   };
@@ -59,7 +65,7 @@ const CalculatorSection = (props: Props) => {
     setFormValues(newFormValues);
   };
 
-  const removeFormField = (blockType: string, idx: number) => {
+  const delFormField = (blockType: string, idx: number) => {
     const newFormValues = { ...formValues };
     newFormValues[blockType].splice(idx, 1);
     setFormValues(newFormValues);
@@ -74,6 +80,7 @@ const CalculatorSection = (props: Props) => {
         formValues={formValues.income}
         handleChange={handleChange}
         addFormField={addFormField}
+        delFormField={delFormField}
       />
       <Heading as="h3">Expenses</Heading>
       <BlockStack
@@ -81,6 +88,7 @@ const CalculatorSection = (props: Props) => {
         formValues={formValues.expenses}
         handleChange={handleChange}
         addFormField={addFormField}
+        delFormField={delFormField}
       />
       <MainButton bg="primary">Calculate</MainButton>
     </div>
