@@ -23,7 +23,7 @@ const MainButton = styled(Button)`
 const defaultFormValue: FormValue = {
   category: "",
   amount: undefined,
-  frequency: "weekly",
+  frequency: "One-off",
   rate: 0,
   blockType: "",
 };
@@ -45,17 +45,26 @@ const CalculatorSection = (props: Props) => {
   });
 
   useEffect(() => {
-    console.log(formValues)
-  }, [formValues])
+    console.log(formValues);
+  }, [formValues]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     blockType: string,
     idx: number
   ) => {
+    console.log("handle change has been called");
+    updateForm(e.target.name, e.target.value, blockType, idx);
+  };
+
+  const updateForm = (
+    fieldName: string,
+    fieldVal: string | number,
+    blockType: string,
+    idx: number
+  ) => {
     const newFormValues = { ...formValues };
-    console.log(e);
-    newFormValues[blockType][idx][e.target.name] = e.target.value;
+    newFormValues[blockType][idx][fieldName] = fieldVal;
     setFormValues(newFormValues);
   };
 
@@ -71,6 +80,13 @@ const CalculatorSection = (props: Props) => {
     setFormValues(newFormValues);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="CalculatorSection">
       <Heading as="h3">Savings</Heading>
@@ -78,7 +94,7 @@ const CalculatorSection = (props: Props) => {
       <BlockStack
         blockType="income"
         formValues={formValues.income}
-        handleChange={handleChange}
+        updateForm={updateForm}
         addFormField={addFormField}
         delFormField={delFormField}
       />
@@ -86,11 +102,13 @@ const CalculatorSection = (props: Props) => {
       <BlockStack
         blockType="expenses"
         formValues={formValues.expenses}
-        handleChange={handleChange}
+        updateForm={updateForm}
         addFormField={addFormField}
         delFormField={delFormField}
       />
-      <MainButton bg="primary">Calculate</MainButton>
+      <MainButton bg="primary" onClick={scrollToTop}>
+        Calculate
+      </MainButton>
     </div>
   );
 };

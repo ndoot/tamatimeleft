@@ -8,8 +8,9 @@ import { FormValue } from "../interfaces";
 interface Props {
   blockType: string;
   formValues: FormValue[];
-  handleChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  updateForm: (
+    fieldName: string,
+    fieldVal: string | number,
     blockType: string,
     idx: number
   ) => void;
@@ -62,7 +63,7 @@ const StyledPhantomDel = styled.div`
 `;
 
 const BlockStack = (props: Props) => {
-  const { blockType, formValues, handleChange, addFormField, delFormField } =
+  const { blockType, formValues, updateForm, addFormField, delFormField } =
     props;
 
   const handleAddClick = (e: MouseEvent) => {
@@ -82,7 +83,7 @@ const BlockStack = (props: Props) => {
           <Block
             formValue={formValueItem}
             blockType={blockType}
-            handleChange={handleChange}
+            updateForm={updateForm}
             idx={idx}
           />
           {idx === 0 ? (

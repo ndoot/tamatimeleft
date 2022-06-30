@@ -3,12 +3,14 @@ import styled from "@emotion/styled";
 import { Box, Card, Input, Select } from "theme-ui";
 import { theme } from "../theme";
 import { FormValue } from "../interfaces";
+import { AutoComplete } from "./Autocomplete";
 
 interface Props {
   blockType: string;
   formValue: FormValue;
-  handleChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  updateForm: (
+    fieldName: string,
+    fieldVal: string | number,
     blockType: string,
     idx: number
   ) => void;
@@ -22,11 +24,15 @@ const EachBox = styled(Box)`
   grid-auto-columns: minmax(0, 1fr);
   grid-auto-flow: column;
   border: 1px solid black;
+  border-radius: 10px;
+  background-color: ${theme.colors?.muted};
   font-family: "Press Start 2P";
+  margin-bottom: 10px;
 `;
 
 const StyledInput = styled(Input)`
-  width: 95%;
+  background-color: white;
+  width: 100%;
   height: 40px;
   font-family: "Press Start 2P";
 `;
@@ -43,13 +49,42 @@ const EachField = styled.div`
 `;
 
 const Block = (props: Props) => {
-  const { blockType, formValue, handleChange, idx } = props;
+  const { blockType, formValue, updateForm, idx } = props;
 
   let inputType = "";
+  let data: Array<Object> = [];
   if (blockType === "income") {
     inputType = "Source";
+    data = [
+      "Work",
+      "Business",
+      "Interest",
+      "Dividends",
+      "Capital Gains (Selling)",
+    ];
   } else if (blockType === "expenses") {
     inputType = "Category";
+    data = [
+      "Entertainment",
+      "Rent",
+      "Utilities",
+      "Food",
+      "Internet",
+      "Water",
+      "Electricity",
+      "Clothing",
+      "Health Insurance",
+      "Life Insurance",
+      "Household Items",
+      "Haircuts",
+      "Credit Card",
+      "Investing",
+      "Loan Payment",
+      "Gifts",
+      "Charity",
+      "Alcohol",
+      "Subscriptions",
+    ];
   }
 
   return (
@@ -57,22 +92,26 @@ const Block = (props: Props) => {
       <Card>
         <EachBox as="form" onSubmit={(e) => e.preventDefault()}>
           <EachField>
-            <StyledInput
-              placeholder={inputType}
-              value={formValue.category}
+            <AutoComplete
+              optionsStyle={{ backgroundColor: "white" }}
+              inputType={inputType}
+              data={data}
+              updateForm={updateForm}
               name="category"
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleChange(e, blockType, idx)
-              }
-            ></StyledInput>
+              idx={idx}
+              blockType={blockType}
+              searchText={formValue.category}
+            />
           </EachField>
           <EachField>
             <StyledInput
               placeholder="Amount"
               type="number"
+              min="0.00"
+              step="0.01"
               value={formValue.amount}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleChange(e, blockType, idx)
+                updateForm(e.target.name, e.target.value, blockType, idx)
               }
               name="amount"
             ></StyledInput>
@@ -82,7 +121,7 @@ const Block = (props: Props) => {
               value={formValue.frequency}
               name="frequency"
               onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                handleChange(e, blockType, idx)
+                updateForm(e.target.name, e.target.value, blockType, idx)
               }
             >
               <option>One-off</option>
