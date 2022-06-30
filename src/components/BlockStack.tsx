@@ -14,13 +14,9 @@ import { FormValue } from "../interfaces";
 
 interface Props {
   blockType: string;
+  formValues: FormValue[];
+  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, idx: number) => void;
 }
-
-const defaultFormValue: FormValue = {
-  category: "",
-  amount: undefined,
-  frequency: "weekly",
-};
 
 const StyledBlockStack = styled.div`
   width: 100%;
@@ -42,39 +38,8 @@ const StyledAddButton = styled(IconButton)`
 `;
 
 const BlockStack = (props: Props) => {
-  const { blockType } = props;
+  const { blockType, formValues, handleChange } = props;
 
-  const [formValues, setFormValues] = useState([defaultFormValue]);
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    idx: number
-  ) => {
-    console.log(`Changing idx ${idx}`)
-    const newFormValues = [...formValues];
-    newFormValues[idx][e.target.name] = e.target.value;
-    setFormValues(newFormValues);
-  };
-
-  const handleSelectChange = (
-    e: ChangeEvent<HTMLSelectElement>,
-    idx: number
-  ) => {
-    const newFormValues = [...formValues];
-    newFormValues[idx][e.target.name] = e.target.value;
-    setFormValues(newFormValues);
-  };
-
-  const addFormField = () => {
-    setFormValues([...formValues, defaultFormValue]);
-  };
-
-  const removeFormField = (idx: number) => {
-    const newFormValues = [...formValues];
-    newFormValues.splice(idx, 1);
-    setFormValues(newFormValues);
-  };
-  
   useEffect(() => {
     console.log(formValues);
   }, [formValues])
