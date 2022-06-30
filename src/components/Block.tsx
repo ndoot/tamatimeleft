@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Box, Button, Card, Heading, Input, Select } from "theme-ui";
+import { Box, Card, Input, Select } from "theme-ui";
 import { theme } from "../theme";
 import { AutoComplete } from "./Autocomplete";
 
@@ -48,33 +48,13 @@ const Block = (props: Props) => {
   let data : Array<Object> = [];
   if (type === "income") {
     inputType = "Source";
-    data = [
-      { "name": "Work" },
-      { "name": "Centrelink" }, 
-    ];
+    data = ["Work", "Business", "Interest", "Dividends", "Capital Gains (Selling)"];
 
   } else if (type === "expenses") {
     inputType = "Category";
-    data = [
-      { "name": "Entertainment" },
-      { "name": "Rent" }, 
-      { "name": "Utilities" }, 
-      { "name": "Food" }, 
-      { "name": "Internet" }, 
-      { "name": "Water" }, 
-      { "name": "Electricity" }, 
-      { "name": "Clothing" }, 
-      { "name": "Health Insurance" }, 
-      { "name": "Life Insurance" }, 
-      { "name": "Household Items" }, 
-      { "name": "Haircuts" }, 
-      { "name": "Credit Card" }, 
-      { "name": "Investing" }, 
-      { "name": "Loan Payment" }, 
-      { "name": "Gifts" }, 
-      { "name": "Charity" }, 
-      { "name": "Alcohol" }, 
-      { "name": "Subscriptions" }, 
+    data = [ "Entertainment", "Rent", "Utilities","Food", "Internet", "Water", "Electricity", "Clothing", 
+      "Health Insurance","Life Insurance","Household Items","Haircuts","Credit Card","Investing","Loan Payment",
+      "Gifts","Charity","Alcohol" ,"Subscriptions"  
     ];
   }
   return (
@@ -89,7 +69,7 @@ const Block = (props: Props) => {
           />
           </EachField>
           <EachField>
-            <StyledInput placeholder="Amount" type="number"></StyledInput>
+            <StyledInput placeholder="Amount" type="number" min="0.00" step="0.01"></StyledInput>
           </EachField>
           <EachField>
             <StyledSelect>

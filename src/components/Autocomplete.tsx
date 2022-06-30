@@ -68,9 +68,6 @@ const StyledInput = styled(Input)`
   font-family: "Press Start 2P";
 `;
 
-interface IData {
-  name: string;
-}
 interface autoCompleteProps {
   optionsStyle?: react.CSSProperties;
   inputType?: string;
@@ -92,17 +89,17 @@ export const AutoComplete: FC<autoCompleteProps> = ({
     let suggestions = [];
     if (value.length > 0) {
       const regex = new RegExp(`^${value}`, "i");
-      suggestions = data.sort().filter((v: IData) => regex.test(v.name));
+      suggestions = data.sort().filter((v: string) => regex.test(v));
     }
     console.log(suggestions);
     setIsComponentVisible(true);
     setSearch({ suggestions, text: value });
   };
 
-  const suggestionSelected = (value: IData) => {
+  const suggestionSelected = (value: string) => {
     setIsComponentVisible(false);
     setSearch({
-      text: value.name,
+      text: value,
       suggestions: []
     });
   };
@@ -136,16 +133,16 @@ export const AutoComplete: FC<autoCompleteProps> = ({
       </div>
       {suggestions.length > 0 && isComponentVisible && (
         <AutoCompleteContainer style={optionsStyle}>
-          {suggestions.map(function (item: IData, index: any) {
+          {suggestions.map(function (item: string, index: any) {
             return (
-              <AutoCompleteItem key={item.name}  style={{
+              <AutoCompleteItem key={item}  style={{
                   backgroundColor: index === 0 ? "#ebf4ff" : ""
                 }}>
                 <AutoCompleteItemButton
-                  key={item.name}
+                  key={item}
                   onClick={() => suggestionSelected(item)}
                 >
-                  {item.name}
+                  {item}
                 </AutoCompleteItemButton>
               </AutoCompleteItem>
             )
