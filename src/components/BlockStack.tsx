@@ -1,20 +1,12 @@
 import styled from "@emotion/styled";
-import React, { MouseEvent } from "react";
+import React, { JSXElementConstructor, MouseEvent, ReactElement } from "react";
 import { IconButton } from "theme-ui";
-import Block from "./Block";
-import { FormValue } from "../interfaces";
 
 interface Props {
   blockType: string;
-  formValues: FormValue[];
-  updateForm: (
-    fieldName: string,
-    fieldVal: string | number,
-    blockType: string,
-    idx: number
-  ) => void;
   addFormField: (blockType: string) => void;
   delFormField: (blockType: string, idx: number) => void;
+  children: ReactElement<any, string | JSXElementConstructor<any>>[];
 }
 
 const StyledBlockStack = styled.div`
@@ -66,8 +58,7 @@ const StyledPhantomDel = styled.div`
 `;
 
 const BlockStack = (props: Props) => {
-  const { blockType, formValues, updateForm, addFormField, delFormField } =
-    props;
+  const { blockType, children, addFormField, delFormField } = props;
 
   const handleAddClick = (e: MouseEvent) => {
     e.preventDefault();
@@ -81,14 +72,9 @@ const BlockStack = (props: Props) => {
 
   return (
     <StyledBlockStack>
-      {formValues.map((formValueItem, idx) => (
+      {children.map((element, idx) => (
         <StyledBlockRow key={`block-${blockType}-${idx}`}>
-          <Block
-            formValue={formValueItem}
-            blockType={blockType}
-            updateForm={updateForm}
-            idx={idx}
-          />
+          {element}
           {idx === 0 ? (
             <StyledPhantomDel></StyledPhantomDel>
           ) : (

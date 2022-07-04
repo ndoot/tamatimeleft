@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
 import BlockStack from "./BlockStack";
 import { FinanceReport, FormValue } from "../interfaces";
+import Block from "./Block";
 
 interface Props {
   updateReport: (report: FinanceReport) => void;
@@ -180,19 +181,33 @@ const CalculatorSection = (props: Props) => {
       <Heading as="h3">Income</Heading>
       <BlockStack
         blockType="income"
-        formValues={formValues.income}
-        updateForm={updateForm}
         addFormField={addFormField}
         delFormField={delFormField}
-      />
+      >
+        {formValues.income.map((formValueItem, idx) => (
+          <Block
+            formValue={formValueItem}
+            blockType="income"
+            updateForm={updateForm}
+            idx={idx}
+          />
+        ))}
+      </BlockStack>
       <Heading as="h3">Expenses</Heading>
       <BlockStack
         blockType="expenses"
-        formValues={formValues.expenses}
-        updateForm={updateForm}
         addFormField={addFormField}
         delFormField={delFormField}
-      />
+      >
+        {formValues.expenses.map((formValueItem, idx) => (
+          <Block
+            formValue={formValueItem}
+            blockType="expenses"
+            updateForm={updateForm}
+            idx={idx}
+          />
+        ))}
+      </BlockStack>
       <MainButton bg="primary" onClick={(e) => onCalculateClick(e)}>
         Calculate
       </MainButton>
