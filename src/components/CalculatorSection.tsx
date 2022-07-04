@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
-import { theme } from "../theme";
 import BlockStack from "./BlockStack";
 import { FormValue } from "../interfaces";
 
@@ -15,7 +14,7 @@ const MainButton = styled(Button)`
   font-family: "Press Start 2P";
   display: block;
   &:hover {
-    background-color: ${theme.colors?.secondary};
+    background-color: ${(props) => props.theme.colors?.secondary};
     cursor: pointer;
   }
 `;

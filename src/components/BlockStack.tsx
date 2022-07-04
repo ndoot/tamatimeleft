@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
-import React, { ChangeEvent, MouseEvent } from "react";
+import React, { MouseEvent } from "react";
 import { IconButton } from "theme-ui";
-import { theme } from "../theme";
 import Block from "./Block";
 import { FormValue } from "../interfaces";
 

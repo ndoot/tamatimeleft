@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from "react";
 import styled from "@emotion/styled";
 import { Box, Card, Input, Select } from "theme-ui";
-import { theme } from "../theme";
 import { FormValue } from "../interfaces";
 import { AutoComplete } from "./Autocomplete";
 
@@ -25,7 +24,7 @@ const EachBox = styled(Box)`
   grid-auto-flow: column;
   border: 1px solid black;
   border-radius: 10px;
-  background-color: ${theme.colors?.muted};
+  background-color: ${(props) => props.theme.colors?.muted};
   font-family: "Press Start 2P";
   margin-bottom: 10px;
 `;
