@@ -6,3 +6,10 @@ export interface FormValue {
   blockType: string;
   [propName: string]: any;
 }
+
+export interface FinanceReport {
+  dying: boolean | undefined;
+  daysToLive: number;
+  incomeCategories: [];
+  expensesCategories: [];
+}

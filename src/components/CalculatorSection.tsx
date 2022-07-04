@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
 import BlockStack from "./BlockStack";
-import { FormValue } from "../interfaces";
+import { FinanceReport, FormValue } from "../interfaces";
 
-interface Props {}
+interface Props {
+  updateReport: (report: FinanceReport) => void;
+}
 
 const MainButton = styled(Button)`
   width: 70%;
@@ -35,7 +37,7 @@ interface AllFormValues {
 }
 
 const CalculatorSection = (props: Props) => {
-  const {} = props;
+  const { updateReport } = props;
 
   const [formValues, setFormValues] = useState<AllFormValues>({
     savings: [{ ...defaultFormValue, blockType: "savings" }],
@@ -77,6 +79,100 @@ const CalculatorSection = (props: Props) => {
     });
   };
 
+  const onCalculateClick = (e: MouseEvent) => {
+    e.preventDefault();
+    const newReport = calculate(formValues);
+    updateReport(newReport);
+    scrollToTop();
+  };
+
+  /**
+   * Given financial data, does the calculation for time left and other
+   * relevant stats about financial status
+   * @param formValues savings, income and expenses information
+   */
+  const calculate = (formValues: AllFormValues) => {
+    const savings = sumOneOffFinances(formValues.savings);
+    const incomePerMonth = sumRecurringFinances(formValues.income);
+    const incomeOneOff = sumOneOffFinances(formValues.income);
+    const expensesPerMonth = sumRecurringFinances(formValues.expenses);
+    const expensesOneOff = sumOneOffFinances(formValues.expenses);
+    const netPerMonth = incomePerMonth - expensesPerMonth;
+
+    const report: FinanceReport = {
+      dying: false,
+      daysToLive: -1,
+      incomeCategories: [],
+      expensesCategories: [],
+    };
+
+    if (netPerMonth < 0) {
+      // dying case
+      report.dying = true;
+      report.daysToLive = calculateDaysToLive(
+        savings + incomeOneOff - expensesOneOff,
+        incomePerMonth,
+        expensesPerMonth
+      );
+    } else {
+      // healthy case
+      report.dying = false;
+    }
+
+    return report;
+  };
+
+  const calculateDaysToLive = (
+    savings: number,
+    incomePerMonth: number,
+    expensesPerMonth: number
+  ) => {
+    const spendingPerDay = (expensesPerMonth - incomePerMonth) / 30;
+    return Math.round(savings / spendingPerDay);
+  };
+
+  /**
+   * Sum together recurring finances by occurrence to calculate
+   * monthly total
+   */
+  const sumRecurringFinances = (data: FormValue[]) => {
+    const perMonth = data.reduce((total, item) => {
+      let multiplier = 0;
+      switch (item.frequency) {
+        case "Monthly":
+          multiplier = 1;
+          break;
+        case "Fortnightly":
+          multiplier = 2;
+          break;
+        case "Weekly":
+          multiplier = 4;
+          break;
+        case "Daily":
+          multiplier = 30;
+          break;
+        default:
+          break;
+      }
+
+      const amount = item.amount === "" ? 0 : item.amount;
+      return total + amount * multiplier;
+    }, 0);
+
+    return perMonth;
+  };
+
+  /**
+   * Sum together one off finances
+   */
+  const sumOneOffFinances = (data: FormValue[]) => {
+    const oneOffs = data.filter((cur) => cur.frequency === "One-off");
+    return oneOffs.reduce((total, cur) => {
+      const amount = cur.amount === "" ? 0 : cur.amount;
+      return total + amount;
+    }, 0);
+  };
+
   return (
     <div className="CalculatorSection">
       <Heading as="h3">Savings</Heading>
@@ -96,7 +192,7 @@ const CalculatorSection = (props: Props) => {
         addFormField={addFormField}
         delFormField={delFormField}
       />
-      <MainButton bg="primary" onClick={() => scrollToTop()}>
+      <MainButton bg="primary" onClick={(e) => onCalculateClick(e)}>
         Calculate
       </MainButton>
     </div>
