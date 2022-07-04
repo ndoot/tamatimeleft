@@ -100,13 +100,13 @@ const CalculatorSection = (props: Props) => {
     const netPerMonth = incomePerMonth - expensesPerMonth;
 
     const report: FinanceReport = {
-      dying: false,
+      dying: undefined,
       daysToLive: -1,
       incomeCategories: [],
       expensesCategories: [],
     };
 
-    if (netPerMonth < 0) {
+    if (netPerMonth < 0 || incomePerMonth === 0) {
       // dying case
       report.dying = true;
       report.daysToLive = calculateDaysToLive(
@@ -128,6 +128,7 @@ const CalculatorSection = (props: Props) => {
     expensesPerMonth: number
   ) => {
     const spendingPerDay = (expensesPerMonth - incomePerMonth) / 30;
+    if (savings <= 0) return 0;
     return Math.round(savings / spendingPerDay);
   };
 
