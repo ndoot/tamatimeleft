@@ -4,6 +4,7 @@ import { Button, Heading } from "theme-ui";
 import BlockStack from "./BlockStack";
 import { FinanceReport, FormValue } from "../interfaces";
 import Block from "./Block";
+import SavingsBlock from "./SavingsBlock";
 
 interface Props {
   updateReport: (report: FinanceReport) => void;
@@ -178,6 +179,19 @@ const CalculatorSection = (props: Props) => {
   return (
     <div className="CalculatorSection">
       <Heading as="h3">Savings</Heading>
+      <BlockStack
+        blockType="savings"
+        addFormField={addFormField}
+        delFormField={delFormField}
+      >
+        {formValues.savings.map((formValueItem, idx) => (
+          <SavingsBlock
+            formValue={formValueItem}
+            updateForm={updateForm}
+            idx={idx}
+          />
+        ))}
+      </BlockStack>
       <Heading as="h3">Income</Heading>
       <BlockStack
         blockType="income"

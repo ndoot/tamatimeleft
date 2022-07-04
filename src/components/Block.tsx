@@ -16,7 +16,7 @@ interface Props {
   idx: number;
 }
 
-const EachBox = styled(Box)`
+export const EachBox = styled(Box)`
   width: auto;
   height: 60px;
   display: grid;
@@ -29,7 +29,7 @@ const EachBox = styled(Box)`
   margin-bottom: 10px;
 `;
 
-const StyledInput = styled(Input)`
+export const StyledInput = styled(Input)`
   background-color: white;
   width: 100%;
   height: 40px;
@@ -41,7 +41,7 @@ const StyledSelect = styled(Select)`
   font-family: "Press Start 2P";
 `;
 
-const EachField = styled.div`
+export const EachField = styled.div`
   padding: 10px;
   height: 30px;
   width: 100%;
