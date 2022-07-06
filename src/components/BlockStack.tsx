@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Button } from "theme-ui";
-import { theme } from "../theme";
 import Block from "./Block";
 
 interface Props {}
