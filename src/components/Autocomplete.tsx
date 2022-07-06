@@ -1,4 +1,4 @@
-import react, { ChangeEvent, FC, useState } from "react";
+import react, { ChangeEvent, FC, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { Input } from "theme-ui";
@@ -11,7 +11,6 @@ https://codesandbox.io/s/simple-react-autocomplete-functionalcomponent-typescrip
 Major changes were made to the design and functionality, including getting it working with existing components and
 adding additional features, including auto-highlight, inputtype changed to array and all styling, removal of dropdown button
 */
-
 
 const Root = styled.div`
   position: relative;
@@ -46,7 +45,7 @@ const AutoCompleteItem = styled.li`
   width: 100%;
   box-sizing: border-box;
   &:hover {
-    background-color: ${theme.colors?.muted} !important; 
+    background-color: ${theme.colors?.muted} !important;
   }
 `;
 
@@ -64,7 +63,7 @@ const AutoCompleteItemButton = styled.button`
 const StyledInput = styled(Input)`
   background-color: white;
   width: 100%;
-  height: 40px;  
+  height: 40px;
   font-family: "Press Start 2P";
 `;
 
@@ -72,21 +71,41 @@ interface autoCompleteProps {
   optionsStyle?: react.CSSProperties;
   inputType?: string;
   data: any[];
+  updateForm: (
+    fieldName: string,
+    fieldVal: string | number,
+    blockType: string,
+    idx: number
+  ) => void;
+  idx: number;
+  blockType: string;
+  name: string;
+  searchText: string;
+}
+
+interface SearchData {
+  text: string;
+  suggestions: string[];
 }
 
 export const AutoComplete: FC<autoCompleteProps> = ({
   optionsStyle,
   inputType,
-  data
+  data,
+  updateForm,
+  idx,
+  blockType,
+  name,
+  searchText,
 }) => {
-  const [search, setSearch] = useState<{text:string, suggestions: any[]}>({
-    text: "",
-    suggestions: []
+  const [search, setSearch] = useState<SearchData>({
+    text: searchText,
+    suggestions: [],
   });
   const [isComponentVisible, setIsComponentVisible] = useState(true);
   const onTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log(value)
+    console.log(value);
     let suggestions = [];
     const regex = new RegExp(`^${value}`, "i");
     suggestions = data.sort().filter((v: string) => regex.test(v));
@@ -99,11 +118,19 @@ export const AutoComplete: FC<autoCompleteProps> = ({
     setIsComponentVisible(false);
     setSearch({
       text: value,
-      suggestions: []
+      suggestions: [],
     });
   };
 
   const { suggestions } = search;
+
+  useEffect(() => {
+    updateForm(name, search.text, blockType, idx);
+  }, [search]);
+
+  useEffect(() => {
+    setSearch({ ...search, text: searchText });
+  }, [searchText]);
 
   return (
     <Root>
@@ -117,7 +144,7 @@ export const AutoComplete: FC<autoCompleteProps> = ({
           position: "fixed",
           zIndex: 0,
           top: 0,
-          left: 0
+          left: 0,
         }}
       />
       <div>
@@ -128,15 +155,19 @@ export const AutoComplete: FC<autoCompleteProps> = ({
           value={search.text}
           onChange={onTextChanged}
           type={"text"}
+          name={name}
         />
       </div>
       {suggestions.length > 0 && isComponentVisible && (
         <AutoCompleteContainer style={optionsStyle}>
           {suggestions.map(function (item: string, index: any) {
             return (
-              <AutoCompleteItem key={item}  style={{
-                  backgroundColor: index === 0 ? "#ebf4ff" : ""
-                }}>
+              <AutoCompleteItem
+                key={item}
+                style={{
+                  backgroundColor: index === 0 ? "#ebf4ff" : "",
+                }}
+              >
                 <AutoCompleteItemButton
                   key={item}
                   onClick={() => suggestionSelected(item)}
@@ -144,12 +175,10 @@ export const AutoComplete: FC<autoCompleteProps> = ({
                   {item}
                 </AutoCompleteItemButton>
               </AutoCompleteItem>
-            )
+            );
           })}
         </AutoCompleteContainer>
       )}
     </Root>
   );
 };
-
-
