@@ -5,8 +5,10 @@ import { FinanceReport } from "../interfaces";
 import happycat from './assets/happycat.gif'; 
 import sadcat from './assets/sadcat.gif'; 
 import sleepcat from './assets/sleepcat.gif'; 
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
-
+import Example from './Example'
 
 interface Props {
   report: FinanceReport;
@@ -32,10 +34,15 @@ const CatSection = (props: Props) => {
     : ["Congrats your pet is thriving!", happycat]);
 
   return (
-    <StyledCatSection>
-      <Heading as="h2">{heading}</Heading>
-      <img src={cat} alt="cat" width={300} height={300}></img>
-    </StyledCatSection>
+    <>
+    <DndProvider backend={HTML5Backend}>
+      <StyledCatSection>
+        <Heading as="h2">{heading}</Heading>
+        <img src={cat} alt="cat" width={300} height={300}></img>
+      </StyledCatSection>
+      <Example />
+    </DndProvider>
+    </>
   )
 };
 
