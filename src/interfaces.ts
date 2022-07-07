@@ -12,4 +12,13 @@ export interface FinanceReport {
   daysToLive: number;
   incomeCategories: [];
   expensesCategories: [];
+  netPerMonth: number;
 }
+
+export const defaultFinanceReport: FinanceReport = {
+  dying: undefined,
+  daysToLive: -1,
+  incomeCategories: [],
+  expensesCategories: [],
+  netPerMonth: 0,
+};

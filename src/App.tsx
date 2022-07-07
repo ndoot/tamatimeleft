@@ -4,7 +4,7 @@ import "./App.css";
 import CalculatorSection from "./components/CalculatorSection";
 import CatSection from "./components/CatSection";
 import styled from "@emotion/styled";
-import { FinanceReport } from "./interfaces";
+import { defaultFinanceReport, FinanceReport } from "./interfaces";
 
 const StyledApp = styled.div`
   width: 90%;
@@ -20,12 +20,8 @@ const StyledApp = styled.div`
 `;
 
 const App = () => {
-  const [fullReport, setFullReport] = useState<FinanceReport>({
-    dying: undefined,
-    daysToLive: -1,
-    incomeCategories: [],
-    expensesCategories: [],
-  });
+  const [fullReport, setFullReport] =
+    useState<FinanceReport>(defaultFinanceReport);
 
   return (
     <StyledApp>
