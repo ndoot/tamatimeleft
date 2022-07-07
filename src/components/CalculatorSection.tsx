@@ -89,6 +89,14 @@ const CalculatorSection = (props: Props) => {
   };
 
   /**
+   * Given a financial report, return number of coins the user is eligible for
+   */
+  const getNumCoins = (report: FinanceReport) => {
+    if (report.dying === undefined || report.dying === true) return 0;
+    return 2000;
+  };
+
+  /**
    * Given financial data, does the calculation for time left and other
    * relevant stats about financial status
    * @param formValues savings, income and expenses information
@@ -100,6 +108,7 @@ const CalculatorSection = (props: Props) => {
     const expensesPerMonth = sumRecurringFinances(formValues.expenses);
     const expensesOneOff = sumOneOffFinances(formValues.expenses);
     const netPerMonth = incomePerMonth - expensesPerMonth;
+    const currentSavings = savings + incomeOneOff - expensesOneOff;
 
     const report: FinanceReport = {
       dying: undefined,
@@ -108,11 +117,15 @@ const CalculatorSection = (props: Props) => {
       expensesCategories: [],
     };
 
-    if (netPerMonth < 0 || incomePerMonth === 0) {
+    if (currentSavings < 0) {
       // dying case
       report.dying = true;
+      report.daysToLive = 0;
+    } else if (netPerMonth < 0 || incomePerMonth === 0) {
+      // also dying
+      report.dying = true;
       report.daysToLive = calculateDaysToLive(
-        savings + incomeOneOff - expensesOneOff,
+        currentSavings,
         incomePerMonth,
         expensesPerMonth
       );
@@ -139,9 +152,9 @@ const CalculatorSection = (props: Props) => {
    * monthly total
    */
   const sumRecurringFinances = (data: FormValue[]) => {
-    const perMonth = data.reduce((total, item) => {
+    const perMonth = data.reduce((total, cur) => {
       let multiplier = 0;
-      switch (item.frequency) {
+      switch (cur.frequency) {
         case "Monthly":
           multiplier = 1;
           break;
@@ -158,7 +171,7 @@ const CalculatorSection = (props: Props) => {
           break;
       }
 
-      const amount = item.amount === "" ? 0 : item.amount;
+      const amount = cur.amount === "" ? 0 : parseInt(`${cur.amount}`);
       return total + amount * multiplier;
     }, 0);
 
@@ -171,7 +184,7 @@ const CalculatorSection = (props: Props) => {
   const sumOneOffFinances = (data: FormValue[]) => {
     const oneOffs = data.filter((cur) => cur.frequency === "One-off");
     return oneOffs.reduce((total, cur) => {
-      const amount = cur.amount === "" ? 0 : cur.amount;
+      const amount = cur.amount === "" ? 0 : parseInt(`${cur.amount}`);
       return total + amount;
     }, 0);
   };
@@ -189,6 +202,7 @@ const CalculatorSection = (props: Props) => {
             formValue={formValueItem}
             updateForm={updateForm}
             idx={idx}
+            key={`savings-${idx}`}
           />
         ))}
       </BlockStack>
@@ -204,6 +218,7 @@ const CalculatorSection = (props: Props) => {
             blockType="income"
             updateForm={updateForm}
             idx={idx}
+            key={`income-${idx}`}
           />
         ))}
       </BlockStack>
@@ -219,6 +234,7 @@ const CalculatorSection = (props: Props) => {
             blockType="expenses"
             updateForm={updateForm}
             idx={idx}
+            key={`expenses-${idx}`}
           />
         ))}
       </BlockStack>
