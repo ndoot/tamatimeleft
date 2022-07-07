@@ -2,7 +2,7 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
 import BlockStack from "./BlockStack";
-import { FinanceReport, FormValue } from "../interfaces";
+import { defaultFinanceReport, FinanceReport, FormValue } from "../interfaces";
 import Block from "./Block";
 import SavingsBlock from "./SavingsBlock";
 
@@ -93,7 +93,8 @@ const CalculatorSection = (props: Props) => {
    */
   const getNumCoins = (report: FinanceReport) => {
     if (report.dying === undefined || report.dying === true) return 0;
-    return 2000;
+
+    return report.netPerMonth;
   };
 
   /**
@@ -110,12 +111,8 @@ const CalculatorSection = (props: Props) => {
     const netPerMonth = incomePerMonth - expensesPerMonth;
     const currentSavings = savings + incomeOneOff - expensesOneOff;
 
-    const report: FinanceReport = {
-      dying: undefined,
-      daysToLive: -1,
-      incomeCategories: [],
-      expensesCategories: [],
-    };
+    const report = defaultFinanceReport;
+    report.netPerMonth = netPerMonth;
 
     if (currentSavings < 0) {
       // dying case
@@ -136,6 +133,8 @@ const CalculatorSection = (props: Props) => {
 
     return report;
   };
+
+  const collectByCategory = (allValues: FormValue[]) => {};
 
   const calculateDaysToLive = (
     savings: number,
