@@ -105,11 +105,9 @@ export const AutoComplete: FC<autoCompleteProps> = ({
   const [isComponentVisible, setIsComponentVisible] = useState(true);
   const onTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log(value);
     let suggestions = [];
     const regex = new RegExp(`^${value}`, "i");
     suggestions = data.sort().filter((v: string) => regex.test(v));
-    console.log(suggestions);
     setIsComponentVisible(true);
     setSearch({ suggestions, text: value });
   };

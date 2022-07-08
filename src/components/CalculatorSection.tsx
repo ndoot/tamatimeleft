@@ -47,10 +47,6 @@ const CalculatorSection = (props: Props) => {
     expenses: [{ ...defaultFormValue, blockType: "expenses" }],
   });
 
-  useEffect(() => {
-    console.log(formValues);
-  }, [formValues]);
-
   const updateForm = (
     fieldName: string,
     fieldVal: string | number,
@@ -84,7 +80,7 @@ const CalculatorSection = (props: Props) => {
   const onCalculateClick = (e: MouseEvent) => {
     e.preventDefault();
     const newReport = calculate(formValues);
-    updateReport(newReport);
+    updateReport({ ...newReport });
     scrollToTop();
   };
 
@@ -130,11 +126,30 @@ const CalculatorSection = (props: Props) => {
       // healthy case
       report.dying = false;
     }
+    report.incomeCategories = collectByCategory(formValues.income);
+    report.expensesCategories = collectByCategory(formValues.expenses);
 
     return report;
   };
 
-  const collectByCategory = (allValues: FormValue[]) => {};
+  /**
+   * Collects total recurring monthly spend for each category
+   */
+  const collectByCategory = (allValues: FormValue[]) => {
+    const byCategoryDict: { [propName: string]: FormValue[] } = {};
+    for (const x of allValues) {
+      if (x.frequency === "One-off") continue;
+      if (x.category in byCategoryDict) {
+        byCategoryDict[x.category].push(x);
+      } else {
+        byCategoryDict[x.category] = [x];
+      }
+    }
+    return Object.entries(byCategoryDict).map(([key, val]) => ({
+      category: key,
+      total: sumRecurringFinances(val),
+    }));
+  };
 
   const calculateDaysToLive = (
     savings: number,

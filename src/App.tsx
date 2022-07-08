@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Divider, Heading } from "theme-ui";
 import "./App.css";
 import CalculatorSection from "./components/CalculatorSection";
@@ -22,6 +22,10 @@ const StyledApp = styled.div`
 const App = () => {
   const [fullReport, setFullReport] =
     useState<FinanceReport>(defaultFinanceReport);
+
+  useEffect(() => {
+    console.log(fullReport);
+  }, [fullReport]);
 
   return (
     <StyledApp>
