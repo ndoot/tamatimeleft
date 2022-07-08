@@ -10,8 +10,8 @@ export interface FormValue {
 export interface FinanceReport {
   dying: boolean | undefined;
   daysToLive: number;
-  incomeCategories: [];
-  expensesCategories: [];
+  incomeCategories: CategoryTotal[];
+  expensesCategories: CategoryTotal[];
   netPerMonth: number;
 }
 
@@ -22,3 +22,8 @@ export const defaultFinanceReport: FinanceReport = {
   expensesCategories: [],
   netPerMonth: 0,
 };
+
+export interface CategoryTotal {
+  category: string;
+  total: number;
+}
