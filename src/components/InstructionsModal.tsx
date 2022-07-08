@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import Modal, { OnAfterOpenCallback } from "react-modal";
-import { Button, Heading } from "theme-ui";
+import { Button, Heading, Text } from "theme-ui";
 
 interface Props {
   isOpen: boolean;
@@ -17,38 +17,25 @@ const StyledModal = styled(Modal)`
   flex-direction: column;
   align-items: centre;
   background-color: ${(props) => props.theme.colors?.background};
-  -webkit-animation-name: modal-animation;
-  -webkit-animation-duration: 0.5s;
-  animation-name: modal-animation;
-  animation-duration: 0.5s;
+  border: 5px solid ${(props) => props.theme.colors?.primary};
+  box-shadow: -5px 0 0 0 black, 5px 0 0 0 black, 0 -5px 0 0 black,
+    0 5px 0 0 black;
 
-  &:before {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
+  padding: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.5s linear;
+`;
 
-  @-webkit-keyframes modal-animation {
-    from {
-      top: -100px;
-      opacity: 0;
-    }
-    to {
-      top: 0px;
-      opacity: 1;
-    }
-  }
-
-  @keyframes modal-animation {
-    from {
-      top: -100px;
-      opacity: 0;
-    }
-    to {
-      top: 0px;
-      opacity: 1;
-    }
+const StyledButton = styled(Button)`
+  display: block;
+  margin: 1rem auto;
+  width: 100px;
+  &:hover {
+    background-color: ${(props) => props.theme.colors?.secondary};
+    cursor: pointer;
   }
 `;
 
@@ -63,7 +50,8 @@ const InstructionsModal = (props: Props) => {
       contentLabel="Instructions modal"
     >
       <Heading>Instructions</Heading>
-      <Button onClick={(e) => onRequestClose(e)}>Close</Button>
+      <Text>Lorem ipsum I guess</Text>
+      <StyledButton onClick={(e) => onRequestClose(e)}>Close</StyledButton>
     </StyledModal>
   );
 };
