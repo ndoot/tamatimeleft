@@ -15,7 +15,6 @@ interface Props {
 }
 
 const CatSection = (props: Props) => {
-  const {} = props;
   const { report } = props;
 
   const StyledCatSection = styled.div`
@@ -35,11 +34,11 @@ const CatSection = (props: Props) => {
 
   return (
     <>
+    <StyledCatSection>
+      <Heading as="h2">{heading}</Heading>
+      <img src={cat} alt="cat" width={300} height={300}></img>
+    </StyledCatSection>
     <DndProvider backend={HTML5Backend}>
-      <StyledCatSection>
-        <Heading as="h2">{heading}</Heading>
-        <img src={cat} alt="cat" width={300} height={300}></img>
-      </StyledCatSection>
       <Example />
     </DndProvider>
     </>
