@@ -2,7 +2,8 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
 import BlockStack from "./BlockStack";
-import { defaultFinanceReport, FinanceReport, FormValue } from "../interfaces";
+import { FinanceReport, FormValue } from "../interfaces";
+import { defaultFinanceReport } from "../constants";
 import Block from "./Block";
 import SavingsBlock from "./SavingsBlock";
 
@@ -109,6 +110,11 @@ const CalculatorSection = (props: Props) => {
 
     const report = defaultFinanceReport;
     report.netPerMonth = netPerMonth;
+    report.savings = savings;
+    report.incomePerMonth = incomePerMonth;
+    report.incomeOneOff = incomeOneOff;
+    report.expensesPerMonth = expensesPerMonth;
+    report.expensesOneOff = expensesOneOff;
 
     if (currentSavings < 0) {
       // dying case
@@ -201,6 +207,30 @@ const CalculatorSection = (props: Props) => {
       const amount = cur.amount === "" ? 0 : parseInt(`${cur.amount}`);
       return total + amount;
     }, 0);
+  };
+
+  /**
+   * Given report, identify ways that the user can improve spending
+   */
+  const getSuggestions = (report: FinanceReport) => {
+    let messages = [];
+    if (report.dying === true) {
+      messages.push(
+        `Oh no! You are spending $${report.netPerMonth} more than you earn every month.`
+      );
+    } else {
+      const savingsPercentage =
+        (report.netPerMonth / report.incomePerMonth) * 100;
+      messages.push(
+        `Congrats! You are currently saving ${savingsPercentage.toFixed(
+          2
+        )}% of your income!`
+      );
+    }
+
+    // figure out top spending for non-essential categories
+
+    return messages;
   };
 
   return (

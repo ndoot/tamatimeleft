@@ -4,7 +4,8 @@ import "./App.css";
 import CalculatorSection from "./components/CalculatorSection";
 import CatSection from "./components/CatSection";
 import styled from "@emotion/styled";
-import { defaultFinanceReport, FinanceReport } from "./interfaces";
+import { FinanceReport } from "./interfaces";
+import { defaultFinanceReport } from "./constants";
 
 const StyledApp = styled.div`
   width: 90%;
