@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React, { useContext } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import { Heading } from "theme-ui";
+import { Heading, Text } from "theme-ui";
 import { expensesCategories } from "../constants";
 import reportContext from "./ReportContext";
 
@@ -33,6 +33,12 @@ const ChartSection = (props: Props) => {
   const { report } = useContext(reportContext);
 
   const expensesData = report.expensesCategories;
+  report.nonEssentialExpenses.sort((a, b) => b.total - a.total);
+  report.variableExpenses.sort((a, b) => b.total - a.total);
+  const topNonEssential =
+    report.nonEssentialExpenses.length > 0
+      ? report.nonEssentialExpenses[0]
+      : undefined;
 
   const colors: { [propName: string]: string } = {
     Essential: "#0088FE",
@@ -52,7 +58,7 @@ const ChartSection = (props: Props) => {
 
   return (
     <StyledChartSection>
-      <StyledHeading as="h2">Your financial breakdown</StyledHeading>
+      <StyledHeading as="h2">Your finances per month</StyledHeading>
       <StyledChartsDiv>
         <StyledSpecificChart>
           <Heading as="h4">Recurring income</Heading>
@@ -109,6 +115,20 @@ const ChartSection = (props: Props) => {
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
+          <Text>
+            {topNonEssential &&
+              `Your biggest non-essential expense is $${topNonEssential.total} for ${topNonEssential.category}.`}
+          </Text>
+          {report.variableExpenses.length > 0 && (
+            <>
+              <Text>
+                {`You could also try reducing spending on these categories:`}
+              </Text>
+              {report.variableExpenses.slice(0, 3).map((entry) => (
+                <Text>{`${entry.category}: $${entry.total}`}</Text>
+              ))}
+            </>
+          )}
         </StyledSpecificChart>
       </StyledChartsDiv>
     </StyledChartSection>
