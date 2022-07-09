@@ -1,14 +1,11 @@
-import React, { MouseEvent, useEffect, useState } from "react";
+import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
 import BlockStack from "./BlockStack";
 import { defaultFinanceReport, FinanceReport, FormValue } from "../interfaces";
 import Block from "./Block";
 import SavingsBlock from "./SavingsBlock";
-
-interface Props {
-  updateReport: (report: FinanceReport) => void;
-}
+import reportContext from "./ReportContext";
 
 const MainButton = styled(Button)`
   width: 70%;
@@ -38,8 +35,8 @@ interface AllFormValues {
   [propName: string]: any;
 }
 
-const CalculatorSection = (props: Props) => {
-  const { updateReport } = props;
+const CalculatorSection = () => {
+  const { report, setReport } = useContext(reportContext);
 
   const [formValues, setFormValues] = useState<AllFormValues>({
     savings: [{ ...defaultFormValue, blockType: "savings" }],
@@ -80,7 +77,7 @@ const CalculatorSection = (props: Props) => {
   const onCalculateClick = (e: MouseEvent) => {
     e.preventDefault();
     const newReport = calculate(formValues);
-    updateReport({ ...newReport });
+    setReport({ ...newReport });
     scrollToTop();
   };
 

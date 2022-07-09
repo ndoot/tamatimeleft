@@ -27,3 +27,7 @@ export interface CategoryTotal {
   category: string;
   total: number;
 }
+
+export interface BoxMap {
+  top: number; left: number; title: string;
+}
