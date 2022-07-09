@@ -105,45 +105,50 @@ const CalculatorSection = () => {
     const netPerMonth = incomePerMonth - expensesPerMonth;
     const currentSavings = savings + incomeOneOff - expensesOneOff;
 
-    const report = defaultFinanceReport;
-    report.netPerMonth = netPerMonth;
-    report.savings = savings;
-    report.incomePerMonth = incomePerMonth;
-    report.incomeOneOff = incomeOneOff;
-    report.expensesPerMonth = expensesPerMonth;
-    report.expensesOneOff = expensesOneOff;
+    const newReport = {
+      ...defaultFinanceReport,
+      netPerMonth,
+      savings,
+      incomePerMonth,
+      incomeOneOff,
+      expensesPerMonth,
+      expensesOneOff,
+      savingsPercentage: (netPerMonth / incomePerMonth) * 100,
+    };
 
     if (currentSavings < 0) {
       // dying case
-      report.dying = true;
-      report.daysToLive = 0;
+      newReport.dying = true;
+      newReport.daysToLive = 0;
     } else if (netPerMonth < 0 || incomePerMonth === 0) {
       // also dying
-      report.dying = true;
-      report.daysToLive = calculateDaysToLive(
+      newReport.dying = true;
+      newReport.daysToLive = calculateDaysToLive(
         currentSavings,
         incomePerMonth,
         expensesPerMonth
       );
     } else {
       // healthy case
-      report.dying = false;
+      newReport.dying = false;
     }
-    report.incomeCategories = collectByCategory(formValues.income);
-    report.expensesCategories = collectByCategory(formValues.expenses);
+    newReport.incomeCategories = collectByCategory(formValues.income);
+    newReport.expensesCategories = collectByCategory(formValues.expenses);
 
-    report.nonEssentialExpenses = report.expensesCategories.filter(
+    // list of non essential expenses
+    newReport.nonEssentialExpenses = newReport.expensesCategories.filter(
       (expense) =>
         expense.category in expensesCategories &&
         expensesCategories[expense.category] === "Non-essential"
     );
-    report.variableExpenses = report.expensesCategories.filter(
+    // list of variable or other expenses
+    newReport.variableExpenses = newReport.expensesCategories.filter(
       (expense) =>
         !(expense.category in expensesCategories) ||
         expensesCategories[expense.category] === "Variable"
     );
 
-    return report;
+    return newReport;
   };
 
   /**
@@ -227,10 +232,8 @@ const CalculatorSection = () => {
         `Oh no! You are spending $${report.netPerMonth} more than you earn every month.`
       );
     } else {
-      const savingsPercentage =
-        (report.netPerMonth / report.incomePerMonth) * 100;
       messages.push(
-        `Congrats! You are currently saving ${savingsPercentage.toFixed(
+        `Congrats! You are currently saving ${report.savingsPercentage.toFixed(
           2
         )}% of your income!`
       );
@@ -238,8 +241,9 @@ const CalculatorSection = () => {
 
     // figure out top spending for non-essential categories
     report.nonEssentialExpenses.sort((a, b) => b.total - a.total);
+    const topNonEssential = report.nonEssentialExpenses[0];
     messages.push(
-      `Your biggest non-essential expense is ${report.nonEssentialExpenses[0].total} for ${report.nonEssentialExpenses[0].category}`
+      `Your biggest non-essential expense is ${topNonEssential.total} for ${topNonEssential.category}`
     );
 
     report.variableExpenses.sort((a, b) => b.total - a.total);
