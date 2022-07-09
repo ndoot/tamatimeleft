@@ -1,15 +1,12 @@
-import React, { MouseEvent, useEffect, useState } from "react";
+import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
 import BlockStack from "./BlockStack";
 import { FinanceReport, FormValue } from "../interfaces";
-import { defaultFinanceReport } from "../constants";
+import { defaultFinanceReport, expensesCategories } from "../constants";
 import Block from "./Block";
 import SavingsBlock from "./SavingsBlock";
-
-interface Props {
-  updateReport: (report: FinanceReport) => void;
-}
+import reportContext from "./ReportContext";
 
 const MainButton = styled(Button)`
   width: 70%;
@@ -39,8 +36,8 @@ interface AllFormValues {
   [propName: string]: any;
 }
 
-const CalculatorSection = (props: Props) => {
-  const { updateReport } = props;
+const CalculatorSection = () => {
+  const { report, setReport } = useContext(reportContext);
 
   const [formValues, setFormValues] = useState<AllFormValues>({
     savings: [{ ...defaultFormValue, blockType: "savings" }],
@@ -81,7 +78,7 @@ const CalculatorSection = (props: Props) => {
   const onCalculateClick = (e: MouseEvent) => {
     e.preventDefault();
     const newReport = calculate(formValues);
-    updateReport({ ...newReport });
+    setReport({ ...newReport });
     scrollToTop();
   };
 
@@ -229,6 +226,23 @@ const CalculatorSection = (props: Props) => {
     }
 
     // figure out top spending for non-essential categories
+    const nonEssentialExpenses = report.expensesCategories.filter(
+      (expense) =>
+        expense.category in expensesCategories &&
+        expensesCategories[expense.category] === "Non-essential"
+    );
+    nonEssentialExpenses.sort((a, b) => b.total - a.total);
+    messages.push(
+      `Your biggest non-essential expense is ${nonEssentialExpenses[0].total} for ${nonEssentialExpenses[0].category}`
+    );
+
+    const variableExpenses = report.expensesCategories.filter(
+      (expense) =>
+        !(expense.category in expensesCategories) ||
+        expensesCategories[expense.category] === "Variable"
+    );
+    variableExpenses.sort((a, b) => b.total - a.total);
+    messages.push(`You can also think about`);
 
     return messages;
   };

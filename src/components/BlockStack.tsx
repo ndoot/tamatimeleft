@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Block from "./Block";
 import React, { JSXElementConstructor, MouseEvent, ReactElement } from "react";
 import { IconButton } from "theme-ui";
 

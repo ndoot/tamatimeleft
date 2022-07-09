@@ -18,9 +18,18 @@ export interface FinanceReport {
   incomeOneOff: number;
   expensesPerMonth: number;
   expensesOneOff: number;
+  savingsPercentage: number;
+  nonEssentialExpenses: CategoryTotal[];
+  variableExpenses: CategoryTotal[];
 }
 
 export interface CategoryTotal {
   category: string;
   total: number;
+}
+
+export interface BoxMap {
+  top: number;
+  left: number;
+  title: string;
 }

@@ -1,7 +1,7 @@
 import { FinanceReport } from "./interfaces";
 
 // Essential -> Variable -> Non-essential
-export const expensesCategories = {
+export const expensesCategories: { [propName: string]: string } = {
   Entertainment: "Non-essential",
   Rent: "Essential",
   Groceries: "Essential",
@@ -36,4 +36,7 @@ export const defaultFinanceReport: FinanceReport = {
   incomeCategories: [],
   expensesCategories: [],
   netPerMonth: 0,
+  savingsPercentage: 0,
+  nonEssentialExpenses: [],
+  variableExpenses: [],
 };
