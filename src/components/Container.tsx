@@ -20,6 +20,8 @@ const StyledCatSection = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border: 1px solid grey;
+
 `
 const StyledShop = styled.div`
   height: 80px;
@@ -28,7 +30,8 @@ const StyledShop = styled.div`
   border-bottom-right-radius: 25px;
   margin-top: -20px;
   position: relative;
-  border: 1px solid black;
+  border: 1px solid grey;
+  
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -67,6 +70,7 @@ const ActiveItem = styled(StyledItem)`
   background-color: #fabeb0;
   &:hover {
     cursor: pointer;
+    background-color: #f0907a;
   }
 `;
 
@@ -112,7 +116,11 @@ export const Container: FC = () => {
   const purchaseItem = (item: string, price: number) => {
     let newcoins = report.netPerMonth - price;
     setReport({...report, netPerMonth: newcoins,});
-    setBoxes([...boxes, { top: 180, left: 20, title: item }]);
+    setBoxes([...boxes, { 
+      top: Math.random() * (200 - 100) + 100, 
+      left: Math.random() * (50 - 10) + 10,
+      title: item 
+    }]);
   }
 
   return (
@@ -137,7 +145,7 @@ export const Container: FC = () => {
           (report.netPerMonth >= items[key].price) 
             ?
             <ActiveItem key={key} id={key} onClick = {() => purchaseItem(key, items[key].price)}>
-                <img src = {items[key].src} alt={key}></img>
+              <img src = {items[key].src} alt={key}></img>
             </ActiveItem>
             :
             <StyledItem key={key} id={key}>

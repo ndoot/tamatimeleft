@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import React,  { useContext, useState } from "react";
 import { Heading } from "theme-ui";
-import { FinanceReport } from "../interfaces";
 import happycat from './assets/happycat.gif'; 
 import sadcat from './assets/sadcat.gif'; 
 import sleepcat from './assets/sleepcat.gif'; 
@@ -12,7 +11,7 @@ import Example from './Example'
 // import Shop from "./Shop";
 
 const CatSection = () => {
-  const {report, setReport} = useContext(reportContext);
+  const {report} = useContext(reportContext);
   const StyledCatSection = styled.div`
     height: 500px;
     align-items: center;
