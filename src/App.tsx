@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import { FinanceReport } from "./interfaces";
 import { defaultFinanceReport } from "./constants";
 import reportContext from "./components/ReportContext";
+import ChartSection from "./components/ChartSection";
 
 const StyledApp = styled.div`
   width: 90%;
@@ -33,6 +34,8 @@ const App = () => {
       <StyledApp>
         <Heading>Savings Cat-culator</Heading>
         <CatSection />
+        <Divider />
+        {report.dying !== undefined && <ChartSection />}
         <Divider />
         <CalculatorSection />
       </StyledApp>

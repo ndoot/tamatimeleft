@@ -10,18 +10,24 @@ import reportContext from "./ReportContext";
 import Example from "./Example";
 import SpeechBubble from "./SpeechBubble";
 
+const StyledCatSection = styled.div`
+  height: 500px;
+  align-items: center;
+  background-color: ${(props) => props.theme.colors?.highlight};
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+`;
+
+const StyledHeading = styled(Heading)`
+  font-size: 1.2rem;
+`;
+
 const CatSection = () => {
   const { report } = useContext(reportContext);
-  const StyledCatSection = styled.div`
-    height: 500px;
-    align-items: center;
-    background-color: ${(props) => props.theme.colors?.highlight};
-    border-radius: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
-  `;
+
   const [heading, cat] =
     report.dying === undefined
       ? ["Enter your current finances", sleepcat]
@@ -32,9 +38,9 @@ const CatSection = () => {
   return (
     <>
       <StyledCatSection>
-        <Heading as="h2">
+        <StyledHeading as="h2">
           {heading + "\n"} <br />
-        </Heading>
+        </StyledHeading>
         {report.dying !== undefined && (
           <SpeechBubble>
             {report.dying
