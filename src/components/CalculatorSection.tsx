@@ -132,6 +132,17 @@ const CalculatorSection = () => {
     report.incomeCategories = collectByCategory(formValues.income);
     report.expensesCategories = collectByCategory(formValues.expenses);
 
+    report.nonEssentialExpenses = report.expensesCategories.filter(
+      (expense) =>
+        expense.category in expensesCategories &&
+        expensesCategories[expense.category] === "Non-essential"
+    );
+    report.variableExpenses = report.expensesCategories.filter(
+      (expense) =>
+        !(expense.category in expensesCategories) ||
+        expensesCategories[expense.category] === "Variable"
+    );
+
     return report;
   };
 
@@ -226,22 +237,12 @@ const CalculatorSection = () => {
     }
 
     // figure out top spending for non-essential categories
-    const nonEssentialExpenses = report.expensesCategories.filter(
-      (expense) =>
-        expense.category in expensesCategories &&
-        expensesCategories[expense.category] === "Non-essential"
-    );
-    nonEssentialExpenses.sort((a, b) => b.total - a.total);
+    report.nonEssentialExpenses.sort((a, b) => b.total - a.total);
     messages.push(
-      `Your biggest non-essential expense is ${nonEssentialExpenses[0].total} for ${nonEssentialExpenses[0].category}`
+      `Your biggest non-essential expense is ${report.nonEssentialExpenses[0].total} for ${report.nonEssentialExpenses[0].category}`
     );
 
-    const variableExpenses = report.expensesCategories.filter(
-      (expense) =>
-        !(expense.category in expensesCategories) ||
-        expensesCategories[expense.category] === "Variable"
-    );
-    variableExpenses.sort((a, b) => b.total - a.total);
+    report.variableExpenses.sort((a, b) => b.total - a.total);
     messages.push(`You can also think about`);
 
     return messages;
