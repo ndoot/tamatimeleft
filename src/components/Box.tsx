@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { memo } from "react";
-import fish from './assets/fish.png'; 
+import { items } from "./Items";
 import styled from "@emotion/styled";
 
 const StyledBox = styled.div`
@@ -13,17 +13,12 @@ export interface BoxProps {
   title: string;
   preview?: boolean;
 }
-interface Items {
-  [propName: string]: any;
-}
-const items: Items = {
-  "fish": [fish, 100, 100]
-}
+
 
 export const Box: FC<BoxProps> = memo(function Box({ title, preview }) {
   return (
     <StyledBox role={preview ? "BoxPreview" : "Box"} >
-      <img src={items[title][0]} alt={title} width={items[title][1]} height={items[title][2]}></img>
+      <img src={items[title]["src"]} alt={title} width={items[title]["width"]} height={items[title]["height"]}></img>
     </StyledBox>
   );
 });

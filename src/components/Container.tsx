@@ -1,17 +1,16 @@
 import update from "immutability-helper";
-import type { CSSProperties, FC } from "react";
+import type { FC } from "react";
 import { useCallback, useState, useContext } from "react";
 import { useDrop } from "react-dnd";
 import styled from "@emotion/styled";
-import { FinanceReport } from "../interfaces";
 import { DraggableBox } from "./DraggableBox";
 import type { DragItem } from "./interfaces";
 import { ItemTypes } from "./ItemTypes";
 import { Heading } from "theme-ui";
 import coin from './assets/coin.gif'
 import { BoxMap } from "../interfaces";
-import fish from './assets/fish.png'; 
 import reportContext from "./ReportContext";
+import { items } from "./Items";
 
 const StyledCatSection = styled.div`
     margin-top: -500px;
@@ -24,7 +23,7 @@ const StyledCatSection = styled.div`
 `
 const StyledShop = styled.div`
   height: 80px;
-  background-color: ${(props) => props.theme.colors?.highlight};
+  background-color: #f0cdc5;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
   margin-top: -20px;
@@ -75,10 +74,7 @@ const ActiveItem = styled(StyledItem)`
 export const Container: FC = () => {
   //const coins = useContext(CoinContext);
   const { report, setReport } = useContext(reportContext);
-  const [boxes, setBoxes] = useState<Array<BoxMap>>([
-    { top: 20, left: 80, title: "fish" },
-    { top: 180, left: 20, title: "fish" }
-  ]);
+  const [boxes, setBoxes] = useState<Array<BoxMap>>([]);
 
   const moveBox = useCallback(
     (id: string, left: number, top: number) => {
@@ -113,12 +109,6 @@ export const Container: FC = () => {
   );
 
   
-  interface Items {
-    [propName: string]: any;
-  }
-  const items: Items = {
-    "fish": [fish, 20],
-  }
   const purchaseItem = (item: string, price: number) => {
     let newcoins = report.netPerMonth - price;
     setReport({...report, netPerMonth: newcoins,});
@@ -144,14 +134,14 @@ export const Container: FC = () => {
           </>
         </Coins>
         {Object.keys(items).map((key) => (
-          (report.netPerMonth >= items[key][1]) 
+          (report.netPerMonth >= items[key].price) 
             ?
-            <ActiveItem key={key} id={key} onClick = {() => purchaseItem(key, items[key][1])}>
-                <img src = {items[key][0]} alt={key}></img>
+            <ActiveItem key={key} id={key} onClick = {() => purchaseItem(key, items[key].price)}>
+                <img src = {items[key].src} alt={key}></img>
             </ActiveItem>
             :
             <StyledItem key={key} id={key}>
-                <img src = {items[key][0]} alt={key}></img>
+                <img src = {items[key].src} alt={key}></img>
             </StyledItem>
 
         ))}
