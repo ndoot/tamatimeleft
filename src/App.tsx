@@ -4,6 +4,7 @@ import "./App.css";
 import CalculatorSection from "./components/CalculatorSection";
 import CatSection from "./components/CatSection";
 import styled from "@emotion/styled";
+import InstructionsModal from "./components/InstructionsModal";
 import { FinanceReport } from "./interfaces";
 import { defaultFinanceReport } from "./constants";
 import reportContext from "./components/ReportContext";
@@ -23,6 +24,7 @@ const StyledApp = styled.div`
 `;
 
 const App = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(true);
   const [report, setReport] = useState<FinanceReport>(defaultFinanceReport);
 
   /*useEffect(() => {
@@ -39,6 +41,10 @@ const App = () => {
         <Divider />
         <CalculatorSection />
       </StyledApp>
+      <InstructionsModal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+      />
     </reportContext.Provider>
   );
 };
