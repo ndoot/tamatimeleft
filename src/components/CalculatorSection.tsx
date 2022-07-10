@@ -1,8 +1,8 @@
-import React, { MouseEvent, useContext, useEffect, useState } from "react";
+import { MouseEvent, useContext, useState } from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
 import BlockStack from "./BlockStack";
-import { FinanceReport, FormValue } from "../interfaces";
+import { FormValue } from "../interfaces";
 import { defaultFinanceReport, expensesCategories } from "../constants";
 import Block from "./Block";
 import SavingsBlock from "./SavingsBlock";
@@ -37,6 +37,7 @@ interface AllFormValues {
 }
 
 const CalculatorSection = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { report, setReport } = useContext(reportContext);
 
   const [formValues, setFormValues] = useState<AllFormValues>({
@@ -80,15 +81,6 @@ const CalculatorSection = () => {
     const newReport = calculate(formValues);
     setReport({ ...newReport });
     scrollToTop();
-  };
-
-  /**
-   * Given a financial report, return number of coins the user is eligible for
-   */
-  const getNumCoins = (report: FinanceReport) => {
-    if (report.dying === undefined || report.dying === true) return 0;
-
-    return report.netPerMonth;
   };
 
   /**

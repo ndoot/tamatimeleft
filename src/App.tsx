@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext, useContext } from "react";
+import { useState } from "react";
 import { Divider, Heading } from "theme-ui";
 import "./App.css";
 import CalculatorSection from "./components/CalculatorSection";

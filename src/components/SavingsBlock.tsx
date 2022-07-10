@@ -1,5 +1,4 @@
-import React, { ChangeEvent } from "react";
-import styled from "@emotion/styled";
+import { ChangeEvent } from "react";
 import { Card } from "theme-ui";
 import { FormValue } from "../interfaces";
 import { AutoComplete } from "./Autocomplete";

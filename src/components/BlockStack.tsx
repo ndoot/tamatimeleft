@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import Block from "./Block";
 import React, { JSXElementConstructor, MouseEvent, ReactElement } from "react";
 import { IconButton, Text } from "theme-ui";
 
@@ -55,12 +54,6 @@ const StyledDelButton = styled(IconButton)`
     background-color: ${(props) => props.theme.colors?.primary};
     color: ${(props) => props.theme.colors?.background};
   }
-`;
-
-const StyledPhantomDel = styled.div`
-  padding-top: 0.4rem;
-  flex: 0 1 40px;
-  margin-left: 0.6rem;
 `;
 
 const StyledText = styled(Text)`

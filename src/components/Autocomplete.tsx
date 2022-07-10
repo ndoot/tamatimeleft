@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import react, { ChangeEvent, FC, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
@@ -103,7 +104,9 @@ export const AutoComplete: FC<autoCompleteProps> = ({
     suggestions: [],
   });
   const [isComponentVisible, setIsComponentVisible] = useState(true);
-  const onInput = (e: ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
+  const onInput = (
+    e: ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>
+  ) => {
     const target = e.target as HTMLTextAreaElement;
     const value = target.value;
     let suggestions = [];

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Heading } from "theme-ui";
 import happycat from "./assets/happycat.gif";
 import sadcat from "./assets/sadcat.gif";
