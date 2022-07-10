@@ -36,7 +36,6 @@ const StyledButton = styled(Button)`
   display: block;
   margin: 1rem auto;
   width: fit-content;
-  border: 3px solid black;
   &:hover {
     background-color: ${(props) => props.theme.colors?.secondary};
     cursor: pointer;
