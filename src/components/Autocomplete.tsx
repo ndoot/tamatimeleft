@@ -103,8 +103,9 @@ export const AutoComplete: FC<autoCompleteProps> = ({
     suggestions: [],
   });
   const [isComponentVisible, setIsComponentVisible] = useState(true);
-  const onTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const onInput = (e: ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement>) => {
+    const target = e.target as HTMLTextAreaElement;
+    const value = target.value;
     let suggestions = [];
     const regex = new RegExp(`^${value}`, "i");
     suggestions = data.sort().filter((v: string) => regex.test(v));
@@ -151,7 +152,8 @@ export const AutoComplete: FC<autoCompleteProps> = ({
           autoComplete="off"
           placeholder={inputType}
           value={search.text}
-          onChange={onTextChanged}
+          onClick={onInput}
+          onChange={onInput}
           type={"text"}
           name={name}
         />
