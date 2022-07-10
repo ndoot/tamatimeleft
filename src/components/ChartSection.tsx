@@ -2,6 +2,9 @@ import styled from "@emotion/styled";
 import React, { useContext } from "react";
 import {
   Cell,
+  Label,
+  LabelList,
+  LabelProps,
   Legend,
   LegendProps,
   Pie,
@@ -21,6 +24,7 @@ import reportContext from "./ReportContext";
 import { CategoryTotal } from "../interfaces";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
 import ExpensesLegend from "./ExpensesLegend";
+import { isAssertEntry } from "typescript";
 
 interface Props {}
 
@@ -75,16 +79,9 @@ const ChartSection = (props: Props) => {
       : undefined;
   report.incomeCategories.sort((a, b) => b.total - a.total);
 
-  // const renderExpensesLegend = (props: LegendProps) => {
-  //   const { payload } = props;
-  //   return (
-  //     <ul>
-  //       {payload?.map((entry, idx) => (
-  //         <li key={`item-${idx}`}>{getExpensesType(entry)}</li>
-  //       ))}
-  //     </ul>
-  //   );
-  // };
+  //  const renderLabel = (entry: Payload) => {
+  //   return entry.name;
+  //  }
 
   return (
     <StyledChartSection>
@@ -101,7 +98,7 @@ const ChartSection = (props: Props) => {
                   <Pie
                     data={expensesData}
                     cx="50%"
-                    cy="50%"
+                    cy="45%"
                     outerRadius={140}
                     fill="#8884d8"
                     dataKey="total"
@@ -113,6 +110,11 @@ const ChartSection = (props: Props) => {
                         fill={expenseTypeColors[getExpensesType(entry)]}
                       />
                     ))}
+                    <LabelList
+                      dataKey="category"
+                      position="outside"
+                      stroke="transparent"
+                    />
                   </Pie>
                   <Tooltip />
                 </PieChart>
@@ -157,7 +159,7 @@ const ChartSection = (props: Props) => {
                   <Pie
                     data={report.incomeCategories}
                     cx="50%"
-                    cy="50%"
+                    cy="45%"
                     labelLine={false}
                     outerRadius={140}
                     fill="#8884d8"
@@ -170,6 +172,11 @@ const ChartSection = (props: Props) => {
                         fill={gradientColors[idx % gradientColors.length]}
                       />
                     ))}
+                    <LabelList
+                      dataKey="category"
+                      position="outside"
+                      stroke="transparent"
+                    />
                   </Pie>
                   <Tooltip />
                 </PieChart>

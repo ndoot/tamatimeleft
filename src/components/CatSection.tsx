@@ -51,7 +51,7 @@ const CatSection = () => {
                 : `Oh no! You're spending more than your current savings. However, you are on track to earn $${report.netPerMonth} a month`
               : `You are currently saving ${report.savingsPercentage.toFixed(
                   2
-                )}% of your income!`}
+                )}% of your income! Check out the charts below to see how you can save even more :)`}
           </SpeechBubble>
         )}
         <img src={cat} alt="cat" width={300} height={300}></img>
