@@ -47,7 +47,7 @@ const CatSection = () => {
               ? report.netPerMonth < 0
                 ? `Oh no! You are spending $${
                     -1 * report.netPerMonth
-                  } more than you earn every month.`
+                  } more than you earn every month. Check out the charts below to see where you could spend less.`
                 : `Oh no! You're spending more than your current savings. However, you are on track to earn $${report.netPerMonth} a month`
               : `You are currently saving ${report.savingsPercentage.toFixed(
                   2
