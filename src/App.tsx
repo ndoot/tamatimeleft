@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import { Divider, Heading } from "theme-ui";
 import "./App.css";
 import CalculatorSection from "./components/CalculatorSection";
 import CatSection from "./components/CatSection";
 import styled from "@emotion/styled";
-import { defaultFinanceReport, FinanceReport } from "./interfaces";
 import InstructionsModal from "./components/InstructionsModal";
+import { FinanceReport } from "./interfaces";
+import { defaultFinanceReport } from "./constants";
+import reportContext from "./components/ReportContext";
+import ChartSection from "./components/ChartSection";
 
 const StyledApp = styled.div`
   width: 90%;
@@ -21,27 +24,28 @@ const StyledApp = styled.div`
 `;
 
 const App = () => {
-  const [fullReport, setFullReport] =
-    useState<FinanceReport>(defaultFinanceReport);
   const [modalIsOpen, setModalIsOpen] = useState(true);
+  const [report, setReport] = useState<FinanceReport>(defaultFinanceReport);
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log(fullReport);
-  }, [fullReport]);
+  }, [fullReport]);*/
 
   return (
-    <div>
+    <reportContext.Provider value={{ report, setReport }}>
       <StyledApp>
         <Heading>Savings Cat-culator</Heading>
-        <CatSection report={fullReport} />
+        <CatSection />
         <Divider />
-        <CalculatorSection updateReport={(report) => setFullReport(report)} />
+        {report.dying !== undefined && <ChartSection />}
+        <Divider />
+        <CalculatorSection />
       </StyledApp>
       <InstructionsModal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
       />
-    </div>
+    </reportContext.Provider>
   );
 };
 

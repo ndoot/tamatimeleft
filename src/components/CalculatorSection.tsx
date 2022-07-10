@@ -1,14 +1,12 @@
-import React, { MouseEvent, useEffect, useState } from "react";
+import React, { MouseEvent, useContext, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "theme-ui";
 import BlockStack from "./BlockStack";
-import { defaultFinanceReport, FinanceReport, FormValue } from "../interfaces";
+import { FinanceReport, FormValue } from "../interfaces";
+import { defaultFinanceReport, expensesCategories } from "../constants";
 import Block from "./Block";
 import SavingsBlock from "./SavingsBlock";
-
-interface Props {
-  updateReport: (report: FinanceReport) => void;
-}
+import reportContext from "./ReportContext";
 
 const MainButton = styled(Button)`
   width: 70%;
@@ -38,8 +36,8 @@ interface AllFormValues {
   [propName: string]: any;
 }
 
-const CalculatorSection = (props: Props) => {
-  const { updateReport } = props;
+const CalculatorSection = () => {
+  const { report, setReport } = useContext(reportContext);
 
   const [formValues, setFormValues] = useState<AllFormValues>({
     savings: [{ ...defaultFormValue, blockType: "savings" }],
@@ -80,7 +78,7 @@ const CalculatorSection = (props: Props) => {
   const onCalculateClick = (e: MouseEvent) => {
     e.preventDefault();
     const newReport = calculate(formValues);
-    updateReport({ ...newReport });
+    setReport({ ...newReport });
     scrollToTop();
   };
 
@@ -107,38 +105,60 @@ const CalculatorSection = (props: Props) => {
     const netPerMonth = incomePerMonth - expensesPerMonth;
     const currentSavings = savings + incomeOneOff - expensesOneOff;
 
-    const report = defaultFinanceReport;
-    report.netPerMonth = netPerMonth;
+    const newReport = {
+      ...defaultFinanceReport,
+      netPerMonth,
+      savings,
+      incomePerMonth,
+      incomeOneOff,
+      expensesPerMonth,
+      expensesOneOff,
+      savingsPercentage: (netPerMonth / incomePerMonth) * 100,
+    };
 
     if (currentSavings < 0) {
       // dying case
-      report.dying = true;
-      report.daysToLive = 0;
+      newReport.dying = true;
+      newReport.daysToLive = 0;
     } else if (netPerMonth < 0 || incomePerMonth === 0) {
       // also dying
-      report.dying = true;
-      report.daysToLive = calculateDaysToLive(
+      newReport.dying = true;
+      newReport.daysToLive = calculateDaysToLive(
         currentSavings,
         incomePerMonth,
         expensesPerMonth
       );
     } else {
       // healthy case
-      report.dying = false;
+      newReport.dying = false;
     }
-    report.incomeCategories = collectByCategory(formValues.income);
-    report.expensesCategories = collectByCategory(formValues.expenses);
+    newReport.incomeCategories = collectByCategory(formValues.income);
+    newReport.expensesCategories = collectByCategory(formValues.expenses);
 
-    return report;
+    // list of non essential expenses
+    newReport.nonEssentialExpenses = newReport.expensesCategories.filter(
+      (expense) =>
+        expense.category in expensesCategories &&
+        expensesCategories[expense.category] === "Non-essential"
+    );
+    // list of variable or other expenses
+    newReport.variableExpenses = newReport.expensesCategories.filter(
+      (expense) =>
+        !(expense.category in expensesCategories) ||
+        expensesCategories[expense.category] === "Variable"
+    );
+
+    return newReport;
   };
 
   /**
-   * Collects total recurring monthly spend for each category
+   * Collects total month's value for each category
    */
   const collectByCategory = (allValues: FormValue[]) => {
     const byCategoryDict: { [propName: string]: FormValue[] } = {};
     for (const x of allValues) {
-      if (x.frequency === "One-off") continue;
+      if (x.amount === "") continue;
+      if (x.category === "") x.category = "Other";
       if (x.category in byCategoryDict) {
         byCategoryDict[x.category].push(x);
       } else {
@@ -147,7 +167,7 @@ const CalculatorSection = (props: Props) => {
     }
     return Object.entries(byCategoryDict).map(([key, val]) => ({
       category: key,
-      total: sumRecurringFinances(val),
+      total: sumRecurringFinances(val) + sumOneOffFinances(val),
     }));
   };
 

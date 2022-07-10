@@ -13,17 +13,23 @@ export interface FinanceReport {
   incomeCategories: CategoryTotal[];
   expensesCategories: CategoryTotal[];
   netPerMonth: number;
+  savings: number;
+  incomePerMonth: number;
+  incomeOneOff: number;
+  expensesPerMonth: number;
+  expensesOneOff: number;
+  savingsPercentage: number;
+  nonEssentialExpenses: CategoryTotal[];
+  variableExpenses: CategoryTotal[];
 }
-
-export const defaultFinanceReport: FinanceReport = {
-  dying: undefined,
-  daysToLive: -1,
-  incomeCategories: [],
-  expensesCategories: [],
-  netPerMonth: 0,
-};
 
 export interface CategoryTotal {
   category: string;
   total: number;
+}
+
+export interface BoxMap {
+  top: number;
+  left: number;
+  title: string;
 }

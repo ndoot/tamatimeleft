@@ -1,25 +1,24 @@
-import type { CSSProperties, FC } from "react";
+import type { FC } from "react";
 import { memo } from "react";
-import happycat from './assets/test.png'; 
+import { items } from "./Items";
+import styled from "@emotion/styled";
 
-const styles: CSSProperties = {
-  cursor: "move",
-  width: "50px",
-  height: "50px"
-};
+const StyledBox = styled.div`
+  cursor: move;
+  width: 50px;
+  height: 50px;
+`
 
 export interface BoxProps {
   title: string;
   preview?: boolean;
 }
 
+
 export const Box: FC<BoxProps> = memo(function Box({ title, preview }) {
   return (
-    <div
-      style={{ ...styles }}
-      role={preview ? "BoxPreview" : "Box"}
-    >
-      <img src={happycat} alt={title} width={300} height={300}></img>
-    </div>
+    <StyledBox role={preview ? "BoxPreview" : "Box"} >
+      <img src={items[title]["src"]} alt={title} width={items[title]["width"]} height={items[title]["height"]}></img>
+    </StyledBox>
   );
 });

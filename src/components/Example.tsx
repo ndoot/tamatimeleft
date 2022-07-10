@@ -6,7 +6,7 @@ import { CustomDragLayer } from "./CustomDragLayer";
 const Example: FC = () => {
   return (
     <div>
-      <Container />
+      <Container/>
       <CustomDragLayer />
     </div>
   );

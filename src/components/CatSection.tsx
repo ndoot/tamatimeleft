@@ -1,49 +1,66 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Heading } from "theme-ui";
-import { FinanceReport } from "../interfaces";
-import happycat from './assets/happycat.gif'; 
-import sadcat from './assets/sadcat.gif'; 
-import sleepcat from './assets/sleepcat.gif'; 
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import happycat from "./assets/happycat.gif";
+import sadcat from "./assets/sadcat.gif";
+import sleepcat from "./assets/sleepcat.gif";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import reportContext from "./ReportContext";
+import Example from "./Example";
+import SpeechBubble from "./SpeechBubble";
 
-import Example from './Example'
+const StyledCatSection = styled.div`
+  height: 500px;
+  align-items: center;
+  background-color: ${(props) => props.theme.colors?.highlight};
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+`;
 
-interface Props {
-  report: FinanceReport;
-}
+const StyledHeading = styled(Heading)`
+  font-size: 1.2rem;
+`;
 
-const CatSection = (props: Props) => {
-  const {} = props;
-  const { report } = props;
+const CatSection = () => {
+  const { report } = useContext(reportContext);
 
-  const StyledCatSection = styled.div`
-    height: 500px;
-    align-items: center;
-    background-color: ${(props) => props.theme.colors?.highlight};
-    border-radius: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  `
-  const [heading, cat] = (report.dying === undefined
-    ? ["Enter your current finances", sleepcat]
-    : report.dying
-    ? [`You have ${report.daysToLive} days to live`, sadcat]
-    : ["Congrats your pet is thriving!", happycat]);
+  const [heading, cat] =
+    report.dying === undefined
+      ? ["Enter your current finances", sleepcat]
+      : report.dying
+      ? [`You have ${report.daysToLive} days to live`, sadcat]
+      : ["Congrats your pet is thriving!", happycat];
 
   return (
     <>
-    <DndProvider backend={HTML5Backend}>
       <StyledCatSection>
-        <Heading as="h2">{heading}</Heading>
+        <StyledHeading as="h2">
+          {heading + "\n"} <br />
+        </StyledHeading>
+        {report.dying !== undefined && (
+          <SpeechBubble>
+            {report.dying
+              ? report.netPerMonth < 0
+                ? `Oh no! You are spending $${
+                    -1 * report.netPerMonth
+                  } more than you earn every month. Check out the charts below to see where you could spend less.`
+                : `Oh no! You're spending more than your current savings. However, you are on track to earn $${report.netPerMonth} a month`
+              : `You are currently saving ${report.savingsPercentage.toFixed(
+                  2
+                )}% of your income! Check out the charts below to see how you can save even more :)`}
+          </SpeechBubble>
+        )}
         <img src={cat} alt="cat" width={300} height={300}></img>
       </StyledCatSection>
-      <Example />
-    </DndProvider>
+      <DndProvider backend={HTML5Backend}>
+        <Example />
+      </DndProvider>
     </>
-  )
+  );
 };
 
 export default CatSection;

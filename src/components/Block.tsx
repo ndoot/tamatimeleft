@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Box, Card, Input, Select } from "theme-ui";
 import { FormValue } from "../interfaces";
 import { AutoComplete } from "./Autocomplete";
+import { expensesCategories } from "../constants";
 
 interface Props {
   blockType: string;
@@ -63,27 +64,7 @@ const Block = (props: Props) => {
     ];
   } else if (blockType === "expenses") {
     inputType = "Category";
-    data = [
-      "Entertainment",
-      "Rent",
-      "Utilities",
-      "Food",
-      "Internet",
-      "Water",
-      "Electricity",
-      "Clothing",
-      "Health Insurance",
-      "Life Insurance",
-      "Household Items",
-      "Haircuts",
-      "Credit Card",
-      "Investing",
-      "Loan Payment",
-      "Gifts",
-      "Charity",
-      "Alcohol",
-      "Subscriptions",
-    ];
+    data = Object.keys(expensesCategories);
   }
 
   return (
