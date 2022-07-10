@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import React from "react";
 import { Text } from "theme-ui";
 import { expenseTypeColors } from "../constants";
 
@@ -32,8 +31,6 @@ const LegendSquare = styled.svg`
 `;
 
 const ExpensesLegend = (props: Props) => {
-  const {} = props;
-
   return (
     <StyledExpensesLegend>
       <LegendList>

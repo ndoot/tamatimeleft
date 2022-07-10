@@ -1,18 +1,13 @@
 import styled from "@emotion/styled";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import {
   Cell,
-  Label,
   LabelList,
-  LabelProps,
   Legend,
-  LegendProps,
   Pie,
   PieChart,
-  PieLabel,
   ResponsiveContainer,
   Tooltip,
-  TooltipProps,
 } from "recharts";
 import { Heading, Text } from "theme-ui";
 import {
@@ -22,9 +17,7 @@ import {
 } from "../constants";
 import reportContext from "./ReportContext";
 import { CategoryTotal } from "../interfaces";
-import { Payload } from "recharts/types/component/DefaultLegendContent";
 import ExpensesLegend from "./ExpensesLegend";
-import { isAssertEntry } from "typescript";
 
 interface Props {}
 
@@ -70,8 +63,6 @@ export const getExpensesType = (entry: CategoryTotal) => {
 };
 
 const ChartSection = (props: Props) => {
-  const {} = props;
-
   const { report } = useContext(reportContext);
 
   const expensesData = report.expensesCategories;
