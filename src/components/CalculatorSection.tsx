@@ -152,12 +152,13 @@ const CalculatorSection = () => {
   };
 
   /**
-   * Collects total recurring monthly spend for each category
+   * Collects total month's value for each category
    */
   const collectByCategory = (allValues: FormValue[]) => {
     const byCategoryDict: { [propName: string]: FormValue[] } = {};
     for (const x of allValues) {
-      if (x.frequency === "One-off") continue;
+      if (x.amount === "") continue;
+      if (x.category === "") x.category = "Other";
       if (x.category in byCategoryDict) {
         byCategoryDict[x.category].push(x);
       } else {
@@ -166,7 +167,7 @@ const CalculatorSection = () => {
     }
     return Object.entries(byCategoryDict).map(([key, val]) => ({
       category: key,
-      total: sumRecurringFinances(val),
+      total: sumRecurringFinances(val) + sumOneOffFinances(val),
     }));
   };
 
@@ -220,36 +221,6 @@ const CalculatorSection = () => {
       const amount = cur.amount === "" ? 0 : parseInt(`${cur.amount}`);
       return total + amount;
     }, 0);
-  };
-
-  /**
-   * Given report, identify ways that the user can improve spending
-   */
-  const getSuggestions = (report: FinanceReport) => {
-    let messages = [];
-    if (report.dying === true) {
-      messages.push(
-        `Oh no! You are spending $${report.netPerMonth} more than you earn every month.`
-      );
-    } else {
-      messages.push(
-        `Congrats! You are currently saving ${report.savingsPercentage.toFixed(
-          2
-        )}% of your income!`
-      );
-    }
-
-    // figure out top spending for non-essential categories
-    report.nonEssentialExpenses.sort((a, b) => b.total - a.total);
-    const topNonEssential = report.nonEssentialExpenses[0];
-    messages.push(
-      `Your biggest non-essential expense is ${topNonEssential.total} for ${topNonEssential.category}`
-    );
-
-    report.variableExpenses.sort((a, b) => b.total - a.total);
-    messages.push(`You can also think about`);
-
-    return messages;
   };
 
   return (

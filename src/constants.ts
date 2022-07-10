@@ -40,3 +40,17 @@ export const defaultFinanceReport: FinanceReport = {
   nonEssentialExpenses: [],
   variableExpenses: [],
 };
+
+export const expenseTypeColors: { [propName: string]: string } = {
+  Needs: "#00A6B2",
+  Wants: "#ED4E1E",
+  Other: "#35B72C",
+};
+
+export const gradientColors = [
+  "#AF3125",
+  "#CC4C33",
+  "#E08062",
+  "#EFA683",
+  "#F9CCAE",
+];
