@@ -3,7 +3,6 @@ import React from "react";
 import Modal, { OnAfterOpenCallback } from "react-modal";
 import { Button, Heading, Text } from "theme-ui";
 import sleepcat from "./assets/sleepcat.gif";
-import PixelButton from "./PixelButton";
 
 interface Props {
   isOpen: boolean;
@@ -102,9 +101,6 @@ const InstructionsModal = (props: Props) => {
       <StyledButton onClick={(e) => onRequestClose(e)}>
         Start budgeting
       </StyledButton>
-      <PixelButton onClick={(e) => onRequestClose(e)}>
-        Start budgeting
-      </PixelButton>
     </StyledModal>
   );
 };
