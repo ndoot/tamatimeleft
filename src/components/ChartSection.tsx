@@ -48,6 +48,10 @@ const StyledSpecificChart = styled.div`
   align-items: center;
 `;
 
+const BiggerText = styled(Text)`
+  font-size: 1.2rem;
+`;
+
 export const getExpensesType = (entry: CategoryTotal) => {
   let type = "Other";
   if (entry.category && entry.category in expensesCategories) {
@@ -117,32 +121,34 @@ const ChartSection = (props: Props) => {
               </ResponsiveContainer>
               {topNonEssential && (
                 <>
-                  <Text>You could reduce your non-essential expenses:</Text>
+                  <BiggerText>
+                    You could reduce your non-essential expenses:
+                  </BiggerText>
                   {report.nonEssentialExpenses.slice(0, 3).map((entry, idx) => (
-                    <Text key={`nonessential-${idx}`}>
+                    <BiggerText key={`nonessential-${idx}`}>
                       <b>{entry.category}</b>
                       {`: $${entry.total}`}
-                    </Text>
+                    </BiggerText>
                   ))}
                 </>
               )}
               <br />
               {report.variableExpenses.length > 0 && (
                 <>
-                  <Text>
+                  <BiggerText>
                     {`You could also try reducing spending on these categories:`}
-                  </Text>
+                  </BiggerText>
                   {report.variableExpenses.slice(0, 3).map((entry, idx) => (
-                    <Text key={`suggestion-${idx}`}>
+                    <BiggerText key={`suggestion-${idx}`}>
                       <b>{entry.category}</b>
                       {`: $${entry.total}`}
-                    </Text>
+                    </BiggerText>
                   ))}
                 </>
               )}
             </>
           ) : (
-            <Text>You do not have any expenses</Text>
+            <BiggerText>You do not have any expenses</BiggerText>
           )}
         </StyledSpecificChart>
 
@@ -177,13 +183,13 @@ const ChartSection = (props: Props) => {
                   <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
-              <Text>
+              <BiggerText>
                 {`Your greatest income source is $${report.incomeCategories[0].total} for`}{" "}
                 <b>{`${report.incomeCategories[0].category}.`}</b>
-              </Text>
+              </BiggerText>
             </>
           ) : (
-            <Text>You do not have any sources of income</Text>
+            <BiggerText>You do not have any sources of income</BiggerText>
           )}
         </StyledSpecificChart>
       </StyledChartsDiv>
