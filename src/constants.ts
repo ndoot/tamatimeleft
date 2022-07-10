@@ -52,6 +52,5 @@ export const gradientColors = [
   "#CC4C33",
   "#E08062",
   "#EFA683",
-  "#FCE8D6",
   "#F9CCAE",
 ];

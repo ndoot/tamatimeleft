@@ -85,11 +85,11 @@ const ChartSection = (props: Props) => {
 
   return (
     <StyledChartSection>
-      <StyledHeading as="h2">Your finances per month</StyledHeading>
+      <StyledHeading as="h2">Your finances this month</StyledHeading>
 
       <StyledChartsDiv>
         <StyledSpecificChart>
-          <Heading as="h4">Recurring expenses</Heading>
+          <Heading as="h4">Expenses</Heading>
           {report.expensesCategories.length > 0 ? (
             <>
               <ResponsiveContainer width="100%" height={400}>
@@ -151,7 +151,7 @@ const ChartSection = (props: Props) => {
         </StyledSpecificChart>
 
         <StyledSpecificChart>
-          <Heading as="h4">Recurring income</Heading>
+          <Heading as="h4">Income</Heading>
           {report.incomeCategories.length > 0 ? (
             <>
               <ResponsiveContainer width="100%" height={400}>
@@ -182,7 +182,8 @@ const ChartSection = (props: Props) => {
                 </PieChart>
               </ResponsiveContainer>
               <Text>
-                {`Your greatest income source is $${report.incomeCategories[0].total} for ${report.incomeCategories[0].category}.`}
+                {`Your greatest income source is $${report.incomeCategories[0].total} for`}{" "}
+                <b>{`${report.incomeCategories[0].category}.`}</b>
               </Text>
             </>
           ) : (
