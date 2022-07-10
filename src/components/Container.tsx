@@ -54,6 +54,18 @@ const NumCoins = styled(Heading)`
   margin-left: 2px;
   font-size: 20px;
 `
+
+const Price = styled.div`
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+  position: absolute;
+  border-radius: 3px;
+  color: black;
+  background-color: #FFD700;
+  display: none;
+`
+
 const StyledItem = styled.div`
   width: 60px;
   height: 60px;
@@ -64,7 +76,11 @@ const StyledItem = styled.div`
   justify-content: center;
   background-color: #fabeb0;
   filter: grayscale(1);
+  &:hover .items {
+    display: inline-block;
+  }
 `
+
 const ActiveItem = styled(StyledItem)`
   filter: grayscale(0);
   background-color: #fabeb0;
@@ -73,7 +89,6 @@ const ActiveItem = styled(StyledItem)`
     background-color: #f0907a;
   }
 `;
-
 
 export const Container: FC = () => {
   //const coins = useContext(CoinContext);
@@ -144,14 +159,19 @@ export const Container: FC = () => {
         {Object.keys(items).map((key) => (
           (report.netPerMonth >= items[key].price) 
             ?
-            <ActiveItem key={key} id={key} onClick = {() => purchaseItem(key, items[key].price)}>
+            <ActiveItem 
+              key={key} 
+              id={key} 
+              onClick = {() => purchaseItem(key, items[key].price)}
+            >
               <img src = {items[key].src} alt={key}></img>
+              <Price className="items">{items[key].price}</Price>
             </ActiveItem>
             :
             <StyledItem key={key} id={key}>
-                <img src = {items[key].src} alt={key}></img>
+              <img src = {items[key].src} alt={key}></img>
+              <Price className="items">{items[key].price}</Price>
             </StyledItem>
-
         ))}
       </StyledShop>
     </>
