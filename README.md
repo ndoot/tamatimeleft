@@ -1,4 +1,4 @@
-# tama-time left aka savings cat-culator
+# Welcome to the Savings Catculator!
 In case the remote link doesn't work:
 1. Make sure you have node version 16 or 18 installed
 2. Clone the repository
