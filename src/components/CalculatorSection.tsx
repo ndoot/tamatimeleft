@@ -157,6 +157,7 @@ const CalculatorSection = () => {
   const collectByCategory = (allValues: FormValue[]) => {
     const byCategoryDict: { [propName: string]: FormValue[] } = {};
     for (const x of allValues) {
+      if (x.amount === "") continue;
       if (x.category === "") x.category = "Other";
       if (x.category in byCategoryDict) {
         byCategoryDict[x.category].push(x);

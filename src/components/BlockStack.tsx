@@ -24,9 +24,12 @@ const StyledAddButton = styled(IconButton)`
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
   font-family: "Press Start 2P";
+  background-color: ${(props) => props.theme.colors?.muted};
 
   &:hover {
     cursor: pointer;
+    background-color: black;
+    color: ${(props) => props.theme.colors?.muted};
   }
 `;
 
@@ -37,18 +40,20 @@ const StyledBlockRow = styled.div`
 
 const StyledDelButton = styled(IconButton)`
   border-radius: 100%;
-  border: solid 1px red;
-  color: red;
+  border: solid 1px ${(props) => props.theme.colors?.primary};
+  color: ${(props) => props.theme.colors?.primary};
   font-family: "Press Start 2P";
-  padding-top: 0.4rem;
+  padding-top: 0.3rem;
   flex: 0 1 40px;
-  width: 30px;
+  width: 28px;
   height: 30px;
   margin-left: 0.6rem;
-  margin-top: -0.2rem;
+  margin-top: -0.3rem;
 
   &:hover {
     cursor: pointer;
+    background-color: ${(props) => props.theme.colors?.primary};
+    color: ${(props) => props.theme.colors?.background};
   }
 `;
 
@@ -76,13 +81,9 @@ const BlockStack = (props: Props) => {
       {children.map((element, idx) => (
         <StyledBlockRow key={`block-${blockType}-${idx}`}>
           {element}
-          {idx === 0 ? (
-            <StyledPhantomDel></StyledPhantomDel>
-          ) : (
-            <StyledDelButton onClick={(e) => handleDelClick(e, idx)}>
-              -
-            </StyledDelButton>
-          )}
+          <StyledDelButton onClick={(e) => handleDelClick(e, idx)}>
+            -
+          </StyledDelButton>
         </StyledBlockRow>
       ))}
       <StyledAddButton onClick={(e) => handleAddClick(e)}>+</StyledAddButton>

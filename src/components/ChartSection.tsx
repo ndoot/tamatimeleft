@@ -79,10 +79,6 @@ const ChartSection = (props: Props) => {
       : undefined;
   report.incomeCategories.sort((a, b) => b.total - a.total);
 
-  //  const renderLabel = (entry: Payload) => {
-  //   return entry.name;
-  //  }
-
   return (
     <StyledChartSection>
       <StyledHeading as="h2">Your finances this month</StyledHeading>
